@@ -1,0 +1,14 @@
+[
+    {
+        "username": "admin",
+        "email": "admin@admin.tld",
+        "emailVerified": true,
+        "password": "admin"
+    },
+    {
+        "username": "reader",
+        "email": "reader@reader.tld",
+        "emailVerified": true,
+        "password": "reader"
+    }
+]

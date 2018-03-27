@@ -1,0 +1,5 @@
+{
+    "../../../index": {
+        "mountPath": "/getUserPermissionTree"
+    }
+}

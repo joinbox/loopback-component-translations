@@ -1,0 +1,34 @@
+[
+    {
+        "model": "Author",
+        "property": "*",
+        "accessType": "*",
+        "permission": "DENY",
+        "principalType": "ROLE",
+        "principalId": "$everyone"
+    },
+    {
+        "model": "Author",
+        "property": "*",
+        "accessType": "*",
+        "permission": "DENY",
+        "principalType": "ROLE",
+        "principalId": "$authenticated"
+    },
+    {
+        "model": "Author",
+        "property": "*",
+        "accessType": "*",
+        "permission": "ALLOW",
+        "principalType": "ROLE",
+        "principalId": 1
+    },
+    {
+        "model": "Author",
+        "property": "*",
+        "accessType": "WRITE",
+        "permission": "DENY",
+        "principalType": "ROLE",
+        "principalId": 2
+    }
+]

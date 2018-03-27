@@ -1,0 +1,47 @@
+{
+    "_meta": {
+        "sources": [
+            "loopback/common/models",
+            "loopback/server/models",
+            "loopback-dummy-project/models"
+        ],
+        "mixins": [
+            "loopback/common/mixins",
+            "loopback/server/mixins"
+        ]
+    },
+    "User": {
+      "dataSource": "db"
+    },
+    "AccessToken": {
+      "dataSource": "db",
+      "public": false
+    },
+    "ACL": {
+      "dataSource": "db",
+      "public": false
+    },
+    "RoleMapping": {
+      "dataSource": "db",
+      "public": false,
+      "options": {
+        "strictObjectIDCoercion": true
+      }
+    },
+    "Role": {
+      "dataSource": "db",
+      "public": false
+    },
+    "Book": {
+        "dataSource": "db"
+    },
+    "Page": {
+        "dataSource": "db"
+    },
+    "Author": {
+        "dataSource": "db"
+    },
+    "Publisher": {
+        "dataSource": "db"
+    }
+}
