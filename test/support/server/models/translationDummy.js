@@ -34,6 +34,7 @@ class TranslationDummyModel extends LoopbackModelBase {
         return false;
     }
 
+    // TODO: Error handling
     async createTransltions(ctx, instance) {
         // No Translations
         const data = ctx.args.originalData;
@@ -48,10 +49,15 @@ class TranslationDummyModel extends LoopbackModelBase {
         const translationConfig = this.TranslationDummy.definition.settings
             .relations.translations;
 
+        const usedLocales = [];
+        data.translations.forEach((translation) => {
+            // Check for duplicaed use if locales
+            if (usedLocales.includes(translation.locale_id))  {
+                throw new Error('Translation for locale already exists', translation);
 
-
-        // TODO: Multiplae transltions with same id or no locales
-        //
+            }
+            usedLocales.push(translation.locale_id);
+        })
 
         const translationsToCreate = data.translations.map((translation) => {
             const translationToCreate = translation;
