@@ -1,0 +1,42 @@
+{
+    "name": "TranslationDummyLocale",
+    "plural": "TranslationDummyLocales",
+    "base": "Model",
+    "idInjection": true,
+    "http": {
+        "path": "TranslationDummyLocale"
+    },
+    "options": {
+        "validateUpsert": true,
+        "postgresql": {
+            "schema": "translations",
+            "table": "TranslationDummy_Locale"
+        }
+    },
+    "properties": {
+        "name": {
+            "type": "String",
+            "required": true
+        },
+        "description": {
+            "type": "String"
+        }
+    },
+    "validations": [],
+    "relations": {
+        "translationDummy": {
+            "type": "belongsTo",
+            "required": true,
+            "model": "TranslationDummy",
+            "foreignKey": "translationdummy_id"
+        },
+        "locale": {
+            "type": "belongsTo",
+            "required": true,
+            "model": "Locale",
+            "foreignKey": "locale_id"
+        }
+    },
+    "acls": [],
+    "methods": {}
+}

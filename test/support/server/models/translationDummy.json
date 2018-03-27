@@ -1,0 +1,44 @@
+{
+    "name": "TranslationDummy",
+    "plural": "TranslationDummies",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "strict": true,
+    "http": {
+        "path": "TranslationDummy"
+    },
+    "options": {
+        "validateUpsert": true,
+        "postgresql": {
+            "schema": "translations",
+            "table": "TranslationDummy"
+        },
+        "translations": [
+            "title",
+            "description"
+        ]
+
+    },
+    "mixins": {
+        "TimeStamp" : {
+            "createdAt" : "created",
+            "updatedAt" : "updated",
+            "silenceWarnings": true
+        }
+    },
+    "properties": {
+        "noTranslate": {
+            "type": "String"
+        }
+    },
+    "validations": [],
+    "relations": {
+        "translations": {
+            "type": "hasMany",
+            "model": "TranslationDummyLocale",
+            "foreignKey": "translationdummy_id"
+        }
+    },
+    "acls": [],
+    "methods": {}
+}

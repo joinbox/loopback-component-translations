@@ -4,9 +4,10 @@ const createData = require('../fixtures/createData');
 
 before('boot microservice', async function() {
     const appRootDir = path.resolve(__dirname, '../server');
+    const projectBootDir = path.resolve(__dirname, '../../../src/boot/');
     const options = {
         appRootDir,
-        bootDirs: [`${appRootDir}/boot`, 'loopback-dummy-project/boot'],
+        bootDirs: [`${appRootDir}/boot`, projectBootDir],
         env: 'test',
     };
 

@@ -1,0 +1,227 @@
+[{
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "language": {
+        "name": "German",
+        "iso-3-char": "DEU",
+        "iso-2-char": "DE",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Switzerland",
+        "short": "CH",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    }
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "language": {
+        "name": "French",
+        "iso-3-char": "FRA",
+        "iso-2-char": "FR",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Switzerland",
+        "short": "CH",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    }
+}, {
+    "language_id": 3,
+    "country_id": 2,
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "language": {
+        "name": "Italian",
+        "iso-3-char": "ITA",
+        "iso-2-char": "IT",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Switzerland",
+        "short": "CH",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    }
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "language": {
+        "name": "German",
+        "iso-3-char": "DEU",
+        "iso-2-char": "DE",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Germany",
+        "short": "DE",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    }
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "language": {
+        "name": "German",
+        "iso-3-char": "DEU",
+        "iso-2-char": "DE",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Austria",
+        "short": "AT",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    }
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "language": {
+        "name": "French",
+        "iso-3-char": "FRA",
+        "iso-2-char": "FR",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Fance",
+        "short": "FR",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    }
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "language": {
+        "name": "German",
+        "iso-3-char": "DEU",
+        "iso-2-char": "DE",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Switzerland",
+        "short": "CH",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    }
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "language": {
+        "name": "Dutch",
+        "iso-3-char": "NLD",
+        "iso-2-char": "NL",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Netherldands",
+        "short": "NL",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    }
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "language": {
+        "name": "Italian",
+        "iso-3-char": "ITA",
+        "iso-2-char": "IT",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Italy",
+        "short": "IT",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    }
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "language": {
+        "name": "English",
+        "iso-3-char": "ENG",
+        "iso-2-char": "EN",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "United Kingdom",
+        "short": "GB",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    }
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "language": {
+        "name": "French",
+        "iso-3-char": "FRA",
+        "iso-2-char": "FR",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Belgium",
+        "short": "BE",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    }
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "language": {
+        "name": "Dutch",
+        "iso-3-char": "NLD",
+        "iso-2-char": "NL",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Belgium",
+        "short": "BE",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    }
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "language": {
+        "name": "French",
+        "iso-3-char": "FRA",
+        "iso-2-char": "FR",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Luxembourg",
+        "short": "LU",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    }
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "language": {
+        "name": "German",
+        "iso-3-char": "DEU",
+        "iso-2-char": "DE",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Luxembourg",
+        "short": "LU",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    }
+}]

@@ -31,14 +31,16 @@
   },
   "homepage": "https://github.com/saia-burgess-controls/loopback-component-translations/#readme",
   "dependencies": {
+    "@joinbox/loopback-microservice": "git+https://github.com/joinbox/loopback-microservice.git#feature/base-model",
     "loopback": "^3.17.1",
-    "@joinbox/loopback-microservice": "^0.1.0"
+    "loopback-ds-timestamp-mixin": "^3.4.1"
   },
   "devDependencies": {
+    "@joinbox/eslint-config-joinbox": ">=1.0.0",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "eslint": "^4.12.1",
-    "@joinbox/eslint-config-joinbox": ">=1.0.0",
+    "loopback-component-explorer": "^5.3.0",
     "loopback-dummy-project": "^1.1.0",
     "mocha": "^4.0.1",
     "nock": "^9.1.5",

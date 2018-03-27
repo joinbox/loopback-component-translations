@@ -3,11 +3,14 @@
         "sources": [
             "loopback/common/models",
             "loopback/server/models",
-            "loopback-dummy-project/models"
+            "loopback-dummy-project/models",
+            "./models",
+            "../../../src/models/"
         ],
         "mixins": [
             "loopback/common/mixins",
-            "loopback/server/mixins"
+            "loopback/server/mixins",
+            "../../../node_modules/loopback-ds-timestamp-mixin"
         ]
     },
     "User": {
@@ -32,16 +35,14 @@
       "dataSource": "db",
       "public": false
     },
-    "Book": {
+    "Locale": {
+      "dataSource": "db",
+      "public": true
+    },
+    "TranslationDummy": {
         "dataSource": "db"
     },
-    "Page": {
-        "dataSource": "db"
-    },
-    "Author": {
-        "dataSource": "db"
-    },
-    "Publisher": {
+    "TranslationDummyLocale": {
         "dataSource": "db"
     }
 }

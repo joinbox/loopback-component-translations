@@ -1,0 +1,35 @@
+{
+    "name": "Locale",
+    "plural": "Locales",
+    "base": "PersistedModel",
+    "http": {
+        "path": "Locale"
+    },
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true,
+        "postgresql": {
+            "schema": "language_service",
+            "table": "Locale"
+        }
+    },
+    "mixins": {
+        "TimeStamp" : {
+            "createdAt" : "created",
+            "updatedAt" : "updated",
+            "silenceWarnings": true
+        }
+    },
+    "language": {
+        "type": "object"
+    },
+    "country": {
+        "type": "object"
+    },
+    "properties": { },
+    "validations": [],
+    "relations": {
+    },
+    "acls": [],
+    "methods": {}
+}
