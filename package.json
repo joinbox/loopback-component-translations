@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/saia-burges-controls/loopback-component-translations.git"
+    "url": "git+ssh://git@github.com/saia-burgess-controls/loopback-component-translations.git"
   },
   "keywords": [
     "loopbacl",
@@ -23,13 +23,13 @@
   "author": "Lorenzo Kappeler",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/saia-burges-controls/loopback-component-translations/issues"
+    "url": "https://github.com/saia-burgess-controls/loopback-component-translations/issues"
   },
   "engines": {
     "node": "^8.0.0",
     "npm": "^5.0.0"
   },
-  "homepage": "https://github.com/saia-burges-controls/loopback-component-translations/#readme",
+  "homepage": "https://github.com/saia-burgess-controls/loopback-component-translations/#readme",
   "dependencies": {
     "loopback": "^3.17.1",
     "@joinbox/loopback-microservice": "^0.1.0"
@@ -38,7 +38,7 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "eslint": "^4.12.1",
-    "eslint-config-joinbox": "git+https://github.com/saia-burges-controls/loopback-component-translations/",
+    "@joinbox/eslint-config-joinbox": ">=1.0.0",
     "loopback-dummy-project": "^1.1.0",
     "mocha": "^4.0.1",
     "nock": "^9.1.5",
