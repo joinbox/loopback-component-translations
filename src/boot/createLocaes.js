@@ -15,7 +15,6 @@ class DataCreator {
 }
 
 module.exports = async function(app, callback) {
-    console.log('app.models.Locale', app.models.Locale);
     const creator = new DataCreator(app.models);
     await creator.createLocales(app.models);
     callback();

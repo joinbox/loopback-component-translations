@@ -5,5 +5,8 @@
                 "${restApiRoot}"
             ]
         }
+    },
+    "final:after": {
+      "strong-error-handler": {}
     }
 }

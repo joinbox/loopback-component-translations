@@ -1,13 +1,11 @@
 const TranslationHandler = require('./src/TranslationHandler');
 
-module.exports = function(app, optionsToMerge) {
-    console.log('optionsToMerge', optionsToMerge);
+module.exports = function(app) {
+    const handler = new TranslationHandler(app);
+    handler.registerTranslationHooks();
 };
 
-
-
-//DEBUG
-
+/*
 const path = require('path');
 const Microservice = require('@joinbox/loopback-microservice');
 
@@ -23,3 +21,4 @@ const options = {
     this.service = await Microservice.boot(options);
     await this.service.start();
 })();
+*/
