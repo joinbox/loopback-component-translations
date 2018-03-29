@@ -2,12 +2,21 @@ const Microservice = require('@joinbox/loopback-microservice');
 
 const MicroserviceError = Microservice.Error;
 
+/**
+ * Handels loopback moels ranslations
+ *
+ * @type {Class}
+ */
 module.exports = class TranslationHandler {
-
     constructor(app) {
         this.app = app;
     }
 
+    /**
+     * Register loopbakc hooks to handle translations
+     *
+     * @return {void}
+     */
     registerTranslationHooks() {
         Object.values(this.app.models).forEach((model) => {
             const translationConfig = model.definition.settings.relations ?
@@ -21,6 +30,7 @@ module.exports = class TranslationHandler {
                         LoopbackModelBase Class in your model.js`);
                 }
 
+                // Note: The registerd function will have the model class scope
                 model.registerHook('beforeRemote', 'create', this.prepateRequestData);
                 model.registerHook('afterRemote', 'create', this.createTransltions);
                 model.registerHook('beforeRemote', 'prototype.patchAttributes', this.updateTranslations);
@@ -29,6 +39,13 @@ module.exports = class TranslationHandler {
         });
     }
 
+    /**
+     * Save the original request to the context and remove all translation data
+     * so the entity can be persisted in strict mode
+     *
+     * @param  {Object}  ctx the request context
+     * @return {Boolean}     stops the middle ware chain if true
+     */
     async prepateRequestData(ctx) {
         const { translations } = this[this.modelName].definition.settings;
 
@@ -55,6 +72,13 @@ module.exports = class TranslationHandler {
         return false;
     }
 
+    /**
+     * Create the given translations and link them to the created entity
+     *
+     * @param  {Object}  ctx the request context
+     * @param  {Object}  instance loopback entity instance
+     * @return {Promise}     stops the middle ware chain if true
+     */
     async createTransltions(ctx, instance) {
         // No Translations
         const data = ctx.args.originalData;
@@ -85,6 +109,12 @@ module.exports = class TranslationHandler {
         return false;
     }
 
+    /**
+     * Update the given translations and remove form the request data
+     *
+     * @param  {Object}  ctx the request context
+     * @return {Promise}     stops the middle ware chain if true
+     */
     async updateTranslations(ctx) {
         const originalData = ctx.args.data;
         const translationConfig = this[this.modelName].definition.settings
@@ -123,6 +153,12 @@ module.exports = class TranslationHandler {
         return false;
     }
 
+    /**
+     * Delte all related translations for a given record
+     *
+     * @param  {Object}  ctx the request context
+     * @return {Promise}     stops the middle ware chain if true
+     */
     async deleteTranslations(ctx) {
         const translationRelationConfig = this[this.modelName].definition
             .settings.relations.translations;
@@ -130,6 +166,12 @@ module.exports = class TranslationHandler {
             .destroyAll({ [translationRelationConfig.foreignKey]: ctx.args.id });
     }
 
+    /**
+     * Check if multiple translations have the same locale_id
+     *
+     * @param  {Array} translations An array with transaltion objects
+     * @return {void}
+     */
     static checkForDublicatedLocales(translations) {
         const usedLocales = [];
         translations.forEach((translation) => {
