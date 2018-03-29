@@ -1,3 +1,7 @@
 {
-    "../../../index": { }
+    "../../../index": { },
+    "loopback-component-explorer": {
+      "mountPath": "/explorer",
+      "generateOperationScopedModels": true
+    }
 }

@@ -1,6 +1,5 @@
 const Microservice = require('@joinbox/loopback-microservice');
 
-const { LoopbackModelBase } = Microservice;
 const MicroserviceError = Microservice.Error;
 
 module.exports = class TranslationHandler {
@@ -24,6 +23,8 @@ module.exports = class TranslationHandler {
 
                 model.registerHook('beforeRemote', 'create', this.prepateRequestData);
                 model.registerHook('afterRemote', 'create', this.createTransltions);
+                model.registerHook('beforeRemote', 'prototype.patchAttributes', this.updateTranslations);
+                model.registerHook('beforeRemote', 'deleteById', this.deleteTranslations);
             }
         });
     }
@@ -68,14 +69,7 @@ module.exports = class TranslationHandler {
         const translationConfig = this[this.modelName].definition.settings
             .relations.translations;
 
-        const usedLocales = [];
-        data.translations.forEach((translation) => {
-            // Check for duplicaed use if locales
-            if (usedLocales.includes(translation.locale_id))  {
-                throw new MicroserviceError('Translation for locale already exists', translation);
-            }
-            usedLocales.push(translation.locale_id);
-        })
+        TranslationHandler.checkForDublicatedLocales(data.translations);
 
         const translationsToCreate = data.translations.map((translation) => {
             const translationToCreate = translation;
@@ -89,5 +83,60 @@ module.exports = class TranslationHandler {
 
         // call next after the async function
         return false;
+    }
+
+    async updateTranslations(ctx) {
+        const originalData = ctx.args.data;
+        const translationConfig = this[this.modelName].definition.settings
+            .translations;
+        const translationRelationConfig = this[this.modelName].definition
+            .settings.relations.translations;
+        const modelPropperties = this[this.modelName].definition.properties;
+        const preparedData = {};
+
+        // No Translations
+        if (!originalData.translations || !translationRelationConfig) {
+            return false;
+        }
+
+        TranslationHandler.checkForDublicatedLocales(originalData.translations);
+
+        // Update request data to be a valid model instance in strict mode
+        Object.keys(modelPropperties).forEach((property) => {
+            if (!translationConfig.includes(property) && originalData[property]) {
+                preparedData[property] = originalData[property];
+            }
+        });
+        ctx.args.data = preparedData;
+        ctx.args.originalData = originalData;
+
+        // Shortahnd for the relationModel upsert function
+        const relationModel = this[this.modelName].app.models[translationRelationConfig.model];
+        let { upsert } = relationModel;
+        upsert = upsert.bind(relationModel);
+
+        // Update all translations, errors will be catched by the registerHook
+        // function
+        await Promise.all(originalData.translations
+            .map(translation => upsert(translation)));
+
+        return false;
+    }
+
+    async deleteTranslations(ctx) {
+        const translationRelationConfig = this[this.modelName].definition
+            .settings.relations.translations;
+        await this[this.modelName].app.models[translationRelationConfig.model]
+            .destroyAll({ [translationRelationConfig.foreignKey]: ctx.args.id });
+    }
+
+    static checkForDublicatedLocales(translations) {
+        const usedLocales = [];
+        translations.forEach((translation) => {
+            if (usedLocales.includes(translation.locale_id)) {
+                throw new MicroserviceError('Translation for locale already exists', translation);
+            }
+            usedLocales.push(translation.locale_id);
+        });
     }
 };
