@@ -1,1 +1,1 @@
-module.exports = function(TranslationDummy) { };
+module.exports = function(TranslationDummyLocale) { };
