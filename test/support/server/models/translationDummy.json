@@ -14,7 +14,7 @@
             "table": "TranslationDummy"
         },
         "translations": [
-            "title",
+            "name",
             "description"
         ]
 

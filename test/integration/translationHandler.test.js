@@ -87,4 +87,58 @@ describe('Translations Integration Test', () => {
         expect(deleteResponse.status).to.equals(200);
         expect(deleteResponse.body).to.have.property('count', 1);
     });
+
+    it('returns existing translation accorrding to Accept-Language header de-ch', async function() {
+        const testData = TestDataProvider.getTestData();
+
+        const createResponse = await this.service.api.request
+            .post(endPointUrl)
+            .send(testData);
+        expect(createResponse.status).to.equals(200);
+
+        const getEndpoint = `${endPointUrl}${createResponse.body.id}`;
+        const getResponse = await this.service.api.request
+            .get(getEndpoint)
+            .set('Accept-Language', 'de-ch, en-GB, DE_LU');
+
+        expect(getResponse.status).to.equals(200);
+        expect(getResponse.body).to.have.property('name', 'testname Translation One');
+        expect(getResponse.body).to.have.property('description', 'Translation One testDescription');
+    });
+
+    it('returns existing translation accorrding to Accept-Language header fr-ch', async function() {
+        const testData = TestDataProvider.getTestData();
+
+        const createResponse = await this.service.api.request
+            .post(endPointUrl)
+            .send(testData);
+        expect(createResponse.status).to.equals(200);
+
+        const getEndpoint = `${endPointUrl}${createResponse.body.id}`;
+        const getResponse = await this.service.api.request
+            .get(getEndpoint)
+            .set('Accept-Language', 'du-my, fr-ch, de-ch, en-GB, DE_LU');
+
+        expect(getResponse.status).to.equals(200);
+        expect(getResponse.body).to.have.property('name', 'testname Translation Two');
+        expect(getResponse.body).to.have.property('description', 'Translation Two testDescription');
+    });
+
+    it('returns empty translation accorrding to Accept-Language header en-gb', async function() {
+        const testData = TestDataProvider.getTestData();
+
+        const createResponse = await this.service.api.request
+            .post(endPointUrl)
+            .send(testData);
+        expect(createResponse.status).to.equals(200);
+
+        const getEndpoint = `${endPointUrl}${createResponse.body.id}`;
+        const getResponse = await this.service.api.request
+            .get(getEndpoint)
+            .set('Accept-Language', 'en-GB');
+
+        expect(getResponse.status).to.equals(200);
+        expect(getResponse.body).to.have.property('name', '');
+        expect(getResponse.body).to.have.property('description', '');
+    });
 });

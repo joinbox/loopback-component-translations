@@ -8,8 +8,9 @@ const MicroserviceError = Microservice.Error;
  * @type {Class}
  */
 module.exports = class TranslationHandler {
-    constructor(app) {
+    constructor({ app, options }) {
         this.app = app;
+        this.options = options;
     }
 
     /**
@@ -31,10 +32,21 @@ module.exports = class TranslationHandler {
                 }
 
                 // Note: The registerd function will have the model class scope
+
+                // POST - Create translations
                 model.registerHook('beforeRemote', 'create', this.prepateRequestData);
                 model.registerHook('afterRemote', 'create', this.createTransltions);
+
+                // PATCH - Update translations
                 model.registerHook('beforeRemote', 'prototype.patchAttributes', this.updateTranslations);
+
+                // DELETE - Delete translations
                 model.registerHook('beforeRemote', 'deleteById', this.deleteTranslations);
+
+                // GET - Propagate translations to the model and handle fallback
+                model.registerHook('afterRemote', 'find', this.propagateTranslations, this);
+                model.registerHook('afterRemote', 'findById', this.propagateTranslations, this);
+                model.registerHook('afterRemote', 'findOne', this.propagateTranslations, this);
             }
         });
     }
@@ -164,6 +176,80 @@ module.exports = class TranslationHandler {
             .settings.relations.translations;
         await this[this.modelName].app.models[translationRelationConfig.model]
             .destroyAll({ [translationRelationConfig.foreignKey]: ctx.args.id });
+    }
+
+    async propagateTranslations(ctx, instance, translationHandlerContext = {}) {
+        const translationConfig = this[this.modelName].definition.settings
+            .translations;
+        const translationRelationConfig = this[this.modelName].definition
+            .settings.relations.translations;
+        const modelTranslations = await this[this.modelName].app
+            .models[translationRelationConfig.model]
+            .find({ [translationRelationConfig.foreignKey]: instance.id });
+        // TODO: May this needs an include filter after switching to the locale service
+        const locales = await this[this.modelName].app
+            .models.Locale.find();
+        const preparedLocales = locales.map((locale) => {
+            const result = locale.toJSON();
+            result.locale = `${locale.language['iso-2-char']}-${locale.country.short}`.toLowerCase();
+
+            return result;
+        });
+        const { options } = translationHandlerContext;
+
+        const acceptLocales = TranslationHandler.parseAcceptLanguageHeader(
+            ctx.req.headers['accept-language'],
+            options.defaultLocale
+        );
+
+        const translation = TranslationHandler
+            .getFallbackTranslation(modelTranslations, acceptLocales, preparedLocales);
+
+        //console.log('preparedLocales', preparedLocales);
+
+        translationConfig.forEach((translatedProperty) => {
+            instance[translatedProperty] = translation[translatedProperty] ?
+                translation[translatedProperty] : '';
+        });
+
+    }
+
+    static getFallbackTranslation(translations, acceptLocales, locales) {
+        const searchLocale = acceptLocales.shift();
+        const locale = locales.find(loc => loc.locale === searchLocale);
+        const translation = (locale) ? translations
+            .find(trans => trans.locale_id === locale.id) : false;
+
+
+        if (translation) {
+            // Hit return translation
+            return translation;
+        } else if (acceptLocales.length === 0)  {
+            // No more locales to search, no translation found
+            return {};
+        }
+
+        // Check the next translation in the fallback chain
+        return TranslationHandler
+            .getFallbackTranslation(translations, acceptLocales, locales);
+
+    }
+
+    // TODO: parse q and lannguage only, move to middleware
+    static parseAcceptLanguageHeader(headerValue, defaultLocale) {
+        const parsedHeader = headerValue ?
+            headerValue.toLowerCase().split(',') : [defaultLocale];
+
+        return parsedHeader.map((locale) => {
+            let cleandLocale = locale.trim();
+
+            if (cleandLocale.includes('_')) {
+                const temp = cleandLocale.split('_');
+                cleandLocale = `${temp[0]}-${temp[1]}`;
+            }
+
+            return cleandLocale;
+        });
     }
 
     /**
