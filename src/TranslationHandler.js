@@ -179,13 +179,18 @@ module.exports = class TranslationHandler {
     }
 
     async propagateTranslations(ctx, instance, translationHandlerContext = {}) {
+        // Nothing to propageate if no language is acceppted
+        if (!ctx.req.parsedHeaders || !ctx.req.parsedHeaders['accept-language']) {
+            return;
+        }
+
         const translationConfig = this[this.modelName].definition.settings
             .translations;
         const translationRelationConfig = this[this.modelName].definition
             .settings.relations.translations;
         const modelTranslations = await this[this.modelName].app
             .models[translationRelationConfig.model]
-            .find({ [translationRelationConfig.foreignKey]: instance.id });
+            .find({ where: { [translationRelationConfig.foreignKey]: instance.id }, order: 'locale_id ASC' });
         // TODO: May this needs an include filter after switching to the locale service
         const locales = await this[this.modelName].app
             .models.Locale.find();
@@ -196,16 +201,14 @@ module.exports = class TranslationHandler {
             return result;
         });
         const { options } = translationHandlerContext;
-
-        const acceptLocales = TranslationHandler.parseAcceptLanguageHeader(
-            ctx.req.headers['accept-language'],
-            options.defaultLocale
-        );
+        if (ctx.req.headers['accept-language'] && !ctx.req.parsedHeaders['accept-language']) {
+            throw new MicroserviceError('Please register the headerParser middleware served with the translation component');
+        }
+        const acceptHeaders = ctx.req.parsedHeaders['accept-language'];
+        acceptHeaders.push(options.defaultAcceptHeader);
 
         const translation = TranslationHandler
-            .getFallbackTranslation(modelTranslations, acceptLocales, preparedLocales);
-
-        //console.log('preparedLocales', preparedLocales);
+            .getFallbackTranslation(modelTranslations, acceptHeaders, preparedLocales);
 
         translationConfig.forEach((translatedProperty) => {
             instance[translatedProperty] = translation[translatedProperty] ?
@@ -214,42 +217,50 @@ module.exports = class TranslationHandler {
 
     }
 
-    static getFallbackTranslation(translations, acceptLocales, locales) {
-        const searchLocale = acceptLocales.shift();
-        const locale = locales.find(loc => loc.locale === searchLocale);
+    static getFallbackTranslation(translations, acceptHeaders, locales) {
+        const searchHeader = acceptHeaders.shift();
+        let locale;
+
+        if (searchHeader.language !== '' && searchHeader.country !== '') {
+            // Header has a locale spcigied
+            locale = locales.find((searchLocale) => {
+                return searchLocale.country.short.toLowerCase() === searchHeader.country &&
+                searchLocale.language['iso-2-char'].toLowerCase() === searchHeader.language
+            });
+        } else if (
+            // Header has a language specified
+            searchHeader.language !== '' &&
+            searchHeader.language !== '*' &&
+            searchHeader.country === ''
+        ) {
+            locale = locales.find((searchLocale) => {
+                return searchLocale.language['iso-2-char'].toLowerCase() === searchHeader.language &&
+                searchLocale.default === true;
+            });
+        } else {
+            // Header has * specified, parsed as language
+            // Simply use the first translation
+            locale = locales.find((searchLocale) => {
+                return searchLocale.id === translations[0].locale_id;
+            });
+
+        }
+
         const translation = (locale) ? translations
             .find(trans => trans.locale_id === locale.id) : false;
-
 
         if (translation) {
             // Hit return translation
             return translation;
-        } else if (acceptLocales.length === 0)  {
+        } else if (acceptHeaders.length === 0) {
             // No more locales to search, no translation found
             return {};
         }
 
         // Check the next translation in the fallback chain
         return TranslationHandler
-            .getFallbackTranslation(translations, acceptLocales, locales);
+            .getFallbackTranslation(translations, acceptHeaders, locales);
 
-    }
-
-    // TODO: parse q and lannguage only, move to middleware
-    static parseAcceptLanguageHeader(headerValue, defaultLocale) {
-        const parsedHeader = headerValue ?
-            headerValue.toLowerCase().split(',') : [defaultLocale];
-
-        return parsedHeader.map((locale) => {
-            let cleandLocale = locale.trim();
-
-            if (cleandLocale.includes('_')) {
-                const temp = cleandLocale.split('_');
-                cleandLocale = `${temp[0]}-${temp[1]}`;
-            }
-
-            return cleandLocale;
-        });
     }
 
     /**

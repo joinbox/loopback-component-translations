@@ -125,3 +125,11 @@ Add the package to the `component-config.json`
 }
 
 ```
+
+Register the HeaderParse middleware to parse the Accept-Language Header.
+Add the following to your `middleware.json`
+```
+"parse": {
+  "@joinbox/loopback-component-translations/src/middleware/acceptLanguageHeader#parse": {}
+},
+```

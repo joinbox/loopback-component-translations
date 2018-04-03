@@ -124,6 +124,24 @@ describe('Translations Integration Test', () => {
         expect(getResponse.body).to.have.property('description', 'Translation Two testDescription');
     });
 
+    it('returns existing translation accorrding to Accept-Language header de-ch;q=0.5, fr-ch;q=1', async function() {
+        const testData = TestDataProvider.getTestData();
+
+        const createResponse = await this.service.api.request
+            .post(endPointUrl)
+            .send(testData);
+        expect(createResponse.status).to.equals(200);
+
+        const getEndpoint = `${endPointUrl}${createResponse.body.id}`;
+        const getResponse = await this.service.api.request
+            .get(getEndpoint)
+            .set('Accept-Language', 'de-ch;q=0.5, fr-ch;q=1');
+
+        expect(getResponse.status).to.equals(200);
+        expect(getResponse.body).to.have.property('name', 'testname Translation Two');
+        expect(getResponse.body).to.have.property('description', 'Translation Two testDescription');
+    });
+
     it('returns empty translation accorrding to Accept-Language header en-gb', async function() {
         const testData = TestDataProvider.getTestData();
 
@@ -140,5 +158,41 @@ describe('Translations Integration Test', () => {
         expect(getResponse.status).to.equals(200);
         expect(getResponse.body).to.have.property('name', '');
         expect(getResponse.body).to.have.property('description', '');
+    });
+
+    it('returns default german translation accorrding to Accept-Language header de', async function() {
+        const testData = TestDataProvider.getTestData();
+
+        const createResponse = await this.service.api.request
+            .post(endPointUrl)
+            .send(testData);
+        expect(createResponse.status).to.equals(200);
+
+        const getEndpoint = `${endPointUrl}${createResponse.body.id}`;
+        const getResponse = await this.service.api.request
+            .get(getEndpoint)
+            .set('Accept-Language', 'de');
+
+        expect(getResponse.status).to.equals(200);
+        expect(getResponse.body).to.have.property('name', 'testname Translation One');
+        expect(getResponse.body).to.have.property('description', 'Translation One testDescription');
+    });
+
+    it('returns fisrt translation accorrding to Accept-Language header *', async function() {
+        const testData = TestDataProvider.getTestData();
+
+        const createResponse = await this.service.api.request
+            .post(endPointUrl)
+            .send(testData);
+        expect(createResponse.status).to.equals(200);
+
+        const getEndpoint = `${endPointUrl}${createResponse.body.id}`;
+        const getResponse = await this.service.api.request
+            .get(getEndpoint)
+            .set('Accept-Language', '*');
+
+        expect(getResponse.status).to.equals(200);
+        expect(getResponse.body).to.have.property('name', 'testname Translation One');
+        expect(getResponse.body).to.have.property('description', 'Translation One testDescription');
     });
 });
