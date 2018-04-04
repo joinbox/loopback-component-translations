@@ -3,7 +3,11 @@ const Microservice = require('@joinbox/loopback-microservice');
 const MicroserviceError = Microservice.Error;
 
 /**
- * Handels loopback moels ranslations
+ * Registers REST-Hooks for POST, PATCH, DELETE and GET methods.
+ * The hooks are registerd based on the model configurations.
+ * See the readme for detailed information about the configuration.
+ * The hooks are handlng the CRUD actions for a given entities translations
+ * Translations need to be provided as an array on the property `translations'
  *
  * @type {Class}
  */
@@ -14,7 +18,7 @@ module.exports = class TranslationHandler {
     }
 
     /**
-     * Register loopbakc hooks to handle translations
+     * Register loopback hooks to handle translations
      *
      * @return {void}
      */
@@ -25,17 +29,18 @@ module.exports = class TranslationHandler {
 
             if (translationConfig) {
                 if (typeof model.registerHook !== 'function') {
-                    throw new MicroserviceError(`The model ${model.modelName}
-                        you are using translations does not have a registerHook
-                        function. This usually means you did not extend the
-                        LoopbackModelBase Class in your model.js`);
+                    throw new MicroserviceError(`The model ${model.modelName},
+                        for wich you are using translations provided by the
+                        module 'loopback-comonent-translations' does not have a
+                        registerHook function. This usually means you did not
+                        extend the LoopbackModelBase Class in your model.js`);
                 }
 
-                // Note: The registerd function will have the model class scope
+                // Note: The registered function will have the model class scope
 
                 // POST - Create translations
-                model.registerHook('beforeRemote', 'create', this.prepateRequestData);
-                model.registerHook('afterRemote', 'create', this.createTransltions);
+                model.registerHook('beforeRemote', 'create', this.prepareRequestData);
+                model.registerHook('afterRemote', 'create', this.createTranslations);
 
                 // PATCH - Update translations
                 model.registerHook('beforeRemote', 'prototype.patchAttributes', this.updateTranslations);
@@ -43,7 +48,10 @@ module.exports = class TranslationHandler {
                 // DELETE - Delete translations
                 model.registerHook('beforeRemote', 'deleteById', this.deleteTranslations);
 
-                // GET - Propagate translations to the model and handle fallback
+                // GET
+                // - Propagate translations to the model instance
+                // - Handle fall-back
+                // - Implement Search logic
                 model.registerHook('afterRemote', 'find', this.propagateTranslations, this);
                 model.registerHook('afterRemote', 'findById', this.propagateTranslations, this);
                 model.registerHook('afterRemote', 'findOne', this.propagateTranslations, this);
@@ -58,7 +66,7 @@ module.exports = class TranslationHandler {
      * @param  {Object}  ctx the request context
      * @return {Boolean}     stops the middle ware chain if true
      */
-    async prepateRequestData(ctx) {
+    async prepareRequestData(ctx) {
         const { translations } = this[this.modelName].definition.settings;
 
         // Case no translations
@@ -72,7 +80,7 @@ module.exports = class TranslationHandler {
         const modelPropperties = this[this.modelName].definition.properties;
 
         Object.keys(modelPropperties).forEach((property) => {
-            if (!translations.includes(property) && originalData[property]) {
+            if (!translations.includes(property) && originalData[property] !== undefined) {
                 preparedData[property] = originalData[property];
             }
         });
@@ -91,7 +99,7 @@ module.exports = class TranslationHandler {
      * @param  {Object}  instance loopback entity instance
      * @return {Promise}     stops the middle ware chain if true
      */
-    async createTransltions(ctx, instance) {
+    async createTranslations(ctx, instance) {
         // No Translations
         const data = ctx.args.originalData;
         if (!data.translations) {
@@ -117,7 +125,8 @@ module.exports = class TranslationHandler {
         await this[this.modelName].app.models[translationConfig.model]
             .create(translationsToCreate);
 
-        // call next after the async function
+        // don't stop the Middleware chain; Call the next fucntion from the
+        // original hook
         return false;
     }
 
@@ -152,7 +161,7 @@ module.exports = class TranslationHandler {
         ctx.args.data = preparedData;
         ctx.args.originalData = originalData;
 
-        // Shortahnd for the relationModel upsert function
+        // shorthand for the relationModel upsert function
         const relationModel = this[this.modelName].app.models[translationRelationConfig.model];
         let { upsert } = relationModel;
         upsert = upsert.bind(relationModel);
@@ -162,6 +171,8 @@ module.exports = class TranslationHandler {
         await Promise.all(originalData.translations
             .map(translation => upsert(translation)));
 
+        // don't stop the Middleware chain; Call the next fucntion from the
+        // original hook
         return false;
     }
 
@@ -179,8 +190,8 @@ module.exports = class TranslationHandler {
     }
 
     async propagateTranslations(ctx, instance, translationHandlerContext = {}) {
-        // Nothing to propageate if no language is acceppted
-        if (!ctx.req.parsedHeaders || !ctx.req.parsedHeaders['accept-language']) {
+        // Nothing to propagate if no language is accepted
+        if (!ctx.req.parsedHeaders || !ctx.req.headers['accept-language']) {
             return;
         }
 
@@ -202,22 +213,26 @@ module.exports = class TranslationHandler {
         });
         const { options } = translationHandlerContext;
         if (ctx.req.headers['accept-language'] && !ctx.req.parsedHeaders['accept-language']) {
-            throw new MicroserviceError('Please register the headerParser middleware served with the translation component');
+            throw new MicroserviceError(`Accept-Language Header not parsed.
+                Please register the headerParser Middleware served with the
+                package 'loopback-comonent-translations', read the package
+                readme for further instructions.`);
         }
         const acceptHeaders = ctx.req.parsedHeaders['accept-language'];
         acceptHeaders.push(options.defaultAcceptHeader);
 
-        const translation = TranslationHandler
+        const translation = translationHandlerContext
             .getFallbackTranslation(modelTranslations, acceptHeaders, preparedLocales);
 
         translationConfig.forEach((translatedProperty) => {
+            // eslint-disable-next-line no-param-reassign
             instance[translatedProperty] = translation[translatedProperty] ?
                 translation[translatedProperty] : '';
         });
 
     }
 
-    static getFallbackTranslation(translations, acceptHeaders, locales) {
+    getFallbackTranslation(translations, acceptHeaders, locales) {
         const searchHeader = acceptHeaders.shift();
         let locale;
 
@@ -258,8 +273,7 @@ module.exports = class TranslationHandler {
         }
 
         // Check the next translation in the fallback chain
-        return TranslationHandler
-            .getFallbackTranslation(translations, acceptHeaders, locales);
+        return this.getFallbackTranslation(translations, acceptHeaders, locales);
 
     }
 

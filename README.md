@@ -8,8 +8,8 @@ The module shall implement generic translations to loopback based project.
 
 * CRUD for Translations
 * Field based translations for entities
-* Persiste own translations: An entity shall persist its own translations on Create, Update, Delete.
-* Language Fallback ( TBD: entity or filed based or verified) (config/flag)
+* Persists own translations: An entity shall persist its own translations on Create, Update, Delete.
+* Language Fall-back ( TBD: entity or filed based or verified) (config/flag)
 * Translation entity on objects (Backward compat); An array with all existing translations for a given entity. (Flag)
 * Locales: Map the available locales to the locale service; First draft make this static
 * Search
@@ -26,7 +26,7 @@ The module shall implement generic translations to loopback based project.
 **Usage:**
 
 Install the package `loopback-comonent-translations` as an npm dependency.
-A working example con be found in the test directory.
+A working example can be found in the test directory.
 
 Crate a Loopback Module for the translations
 Register all properties you want to translate.
@@ -102,15 +102,14 @@ const Microservice = require('@joinbox/loopback-microservice');
 const { LoopbackModelBase } = Microservice;
 
 class TranslationDummyModel extends LoopbackModelBase {
-    constructor(model) {
+    constructor({ model }) {
         super({ model });
     }
 }
 
 module.exports = function(model) {
-    return new TranslationDummyModel(model);
+    return new TranslationDummyModel({ model });
 };
-
 ```
 
 Add the package to the `component-config.json`
