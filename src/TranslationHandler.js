@@ -125,7 +125,7 @@ module.exports = class TranslationHandler {
         await this[this.modelName].app.models[translationConfig.model]
             .create(translationsToCreate);
 
-        // don't stop the Middleware chain; Call the next fucntion from the
+        // don't stop the Middleware chain; Call the next function from the
         // original hook
         return false;
     }
@@ -171,7 +171,7 @@ module.exports = class TranslationHandler {
         await Promise.all(originalData.translations
             .map(translation => upsert(translation)));
 
-        // don't stop the Middleware chain; Call the next fucntion from the
+        // don't stop the Middleware chain; Call the next function from the
         // original hook
         return false;
     }
@@ -202,9 +202,11 @@ module.exports = class TranslationHandler {
         const modelTranslations = await this[this.modelName].app
             .models[translationRelationConfig.model]
             .find({ where: { [translationRelationConfig.foreignKey]: instance.id }, order: 'locale_id ASC' });
-        // TODO: May this needs an include filter after switching to the locale service
+        const localesFilter = this[this.modelName].app.models.Locale
+            .definition.settings.relations.language ?
+            { include: ['language', 'country'] } : {};
         const locales = await this[this.modelName].app
-            .models.Locale.find();
+            .models.Locale.find(localesFilter);
         const preparedLocales = locales.map((locale) => {
             const result = locale.toJSON();
             result.locale = `${locale.language['iso-2-char']}-${locale.country.short}`.toLowerCase();
@@ -237,7 +239,7 @@ module.exports = class TranslationHandler {
         let locale;
 
         if (searchHeader.language !== '' && searchHeader.country !== '') {
-            // Header has a locale spcigied
+            // Header has a locale specified
             locale = locales.find((searchLocale) => {
                 return searchLocale.country.short.toLowerCase() === searchHeader.country &&
                 searchLocale.language['iso-2-char'].toLowerCase() === searchHeader.language
