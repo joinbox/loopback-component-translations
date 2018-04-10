@@ -195,14 +195,21 @@ module.exports = class TranslationHandler {
         if (!ctx.req.parsedHeaders || !ctx.req.headers['accept-language']) {
             return;
         }
+        const hasMultipleResults = instance instanceof Array;
 
         const translationConfig = this.loopbackModel.definition.settings
             .translations;
         const translationRelationConfig = this.loopbackModel.definition
             .settings.relations.translations;
+        const translationsFilter = {
+            order: 'locale_id ASC'
+        };
+        translationsFilter.where = hasMultipleResults ? {} : {
+            [translationRelationConfig.foreignKey]: instance.id
+        };
         const modelTranslations = await this.loopbackModel.app
             .models[translationRelationConfig.model]
-            .find({ where: { [translationRelationConfig.foreignKey]: instance.id }, order: 'locale_id ASC' });
+            .find(translationsFilter);
         const localesFilter = this.loopbackModel.app.models.Locale
             .definition.settings.relations.language ?
             { include: ['language', 'country'] } : {};
@@ -224,18 +231,40 @@ module.exports = class TranslationHandler {
         const acceptHeaders = ctx.req.parsedHeaders['accept-language'];
         acceptHeaders.push(options.defaultAcceptHeader);
 
-        const translation = translationHandlerContext
-            .getFallbackTranslation(modelTranslations, acceptHeaders, preparedLocales);
+        if (hasMultipleResults) {
+            instance.forEach((entity) => {
+                const translation = translationHandlerContext
+                    .getFallbackTranslation({
+                        acceptHeaders: [...acceptHeaders],
+                        translations: modelTranslations.filter(translation =>
+                            translation[translationRelationConfig.foreignKey]
+                            === entity.id),
+                        locales: preparedLocales,
+                    });
 
-        translationConfig.forEach((translatedProperty) => {
-            // eslint-disable-next-line no-param-reassign
-            instance[translatedProperty] = translation[translatedProperty] ?
-                translation[translatedProperty] : '';
-        });
+                translationConfig.forEach((translatedProperty) => {
+                    // eslint-disable-next-line no-param-reassign
+                    entity[translatedProperty] = translation[translatedProperty] ?
+                        translation[translatedProperty] : '';
+                });
+            });
+        } else {
+            const translation = translationHandlerContext
+                .getFallbackTranslation({
+                    acceptHeaders: [...acceptHeaders],
+                    translations: modelTranslations,
+                    locales: preparedLocales,
+                });
 
+            translationConfig.forEach((translatedProperty) => {
+                // eslint-disable-next-line no-param-reassign
+                instance[translatedProperty] = translation[translatedProperty] ?
+                    translation[translatedProperty] : '';
+            });
+        }
     }
 
-    getFallbackTranslation(translations, acceptHeaders, locales) {
+    getFallbackTranslation({ translations, acceptHeaders, locales }) {
         const searchHeader = acceptHeaders.shift();
         let locale;
 
@@ -259,9 +288,12 @@ module.exports = class TranslationHandler {
             // Header has * specified, parsed as language
             // Simply use the first translation
             locale = locales.find((searchLocale) => {
-                return searchLocale.id === translations[0].locale_id;
-            });
+                if (translations[0]) {
+                    return searchLocale.id === translations[0].locale_id;
+                }
 
+                return false
+            });
         }
 
         const translation = (locale) ? translations
@@ -276,8 +308,7 @@ module.exports = class TranslationHandler {
         }
 
         // Check the next translation in the fallback chain
-        return this.getFallbackTranslation(translations, acceptHeaders, locales);
-
+        return this.getFallbackTranslation({ translations, acceptHeaders, locales });
     }
 
     /**
