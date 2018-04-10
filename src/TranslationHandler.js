@@ -43,6 +43,7 @@ module.exports = class TranslationHandler {
                 model.registerHook('afterRemote', 'create', this.createTranslations);
 
                 // PATCH - Update translations
+                model.registerHook('beforeRemote', 'patchOrCreate', this.updateTranslations);
                 model.registerHook('beforeRemote', 'prototype.patchAttributes', this.updateTranslations);
 
                 // DELETE - Delete translations
