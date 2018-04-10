@@ -67,7 +67,7 @@ module.exports = class TranslationHandler {
      * @return {Boolean}     stops the middle ware chain if true
      */
     async prepareRequestData(ctx) {
-        const { translations } = this[this.modelName].definition.settings;
+        const { translations } = this.loopbackModel.definition.settings;
 
         // Case no translations
         if (!translations) {
@@ -77,7 +77,7 @@ module.exports = class TranslationHandler {
         const originalData = ctx.args.data;
         const preparedData = {};
 
-        const modelPropperties = this[this.modelName].definition.properties;
+        const modelPropperties = this.loopbackModel.definition.properties;
 
         Object.keys(modelPropperties).forEach((property) => {
             if (!translations.includes(property) && originalData[property] !== undefined) {
@@ -106,11 +106,11 @@ module.exports = class TranslationHandler {
             return false;
         }
 
-        if (!this[this.modelName].definition.settings.relations.translations) {
+        if (!this.loopbackModel.definition.settings.relations.translations) {
             return new MicroserviceError('You do not have a translation configuration in your models relations!', { status: 406 });
         }
 
-        const translationConfig = this[this.modelName].definition.settings
+        const translationConfig = this.loopbackModel.definition.settings
             .relations.translations;
 
         TranslationHandler.checkForDublicatedLocales(data.translations);
@@ -122,7 +122,7 @@ module.exports = class TranslationHandler {
             return translationToCreate;
         });
 
-        await this[this.modelName].app.models[translationConfig.model]
+        await this.loopbackModel.app.models[translationConfig.model]
             .create(translationsToCreate);
 
         // don't stop the Middleware chain; Call the next function from the
@@ -138,11 +138,11 @@ module.exports = class TranslationHandler {
      */
     async updateTranslations(ctx) {
         const originalData = ctx.args.data;
-        const translationConfig = this[this.modelName].definition.settings
+        const translationConfig = this.loopbackModel.definition.settings
             .translations;
-        const translationRelationConfig = this[this.modelName].definition
+        const translationRelationConfig = this.loopbackModel.definition
             .settings.relations.translations;
-        const modelPropperties = this[this.modelName].definition.properties;
+        const modelPropperties = this.loopbackModel.definition.properties;
         const preparedData = {};
 
         // No Translations
@@ -162,7 +162,7 @@ module.exports = class TranslationHandler {
         ctx.args.originalData = originalData;
 
         // shorthand for the relationModel upsert function
-        const relationModel = this[this.modelName].app.models[translationRelationConfig.model];
+        const relationModel = this.loopbackModel.app.models[translationRelationConfig.model];
         let { upsert } = relationModel;
         upsert = upsert.bind(relationModel);
 
@@ -183,9 +183,9 @@ module.exports = class TranslationHandler {
      * @return {Promise}     stops the middle ware chain if true
      */
     async deleteTranslations(ctx) {
-        const translationRelationConfig = this[this.modelName].definition
+        const translationRelationConfig = this.loopbackModel.definition
             .settings.relations.translations;
-        await this[this.modelName].app.models[translationRelationConfig.model]
+        await this.loopbackModel.app.models[translationRelationConfig.model]
             .destroyAll({ [translationRelationConfig.foreignKey]: ctx.args.id });
     }
 
@@ -195,17 +195,17 @@ module.exports = class TranslationHandler {
             return;
         }
 
-        const translationConfig = this[this.modelName].definition.settings
+        const translationConfig = this.loopbackModel.definition.settings
             .translations;
-        const translationRelationConfig = this[this.modelName].definition
+        const translationRelationConfig = this.loopbackModel.definition
             .settings.relations.translations;
-        const modelTranslations = await this[this.modelName].app
+        const modelTranslations = await this.loopbackModel.app
             .models[translationRelationConfig.model]
             .find({ where: { [translationRelationConfig.foreignKey]: instance.id }, order: 'locale_id ASC' });
-        const localesFilter = this[this.modelName].app.models.Locale
+        const localesFilter = this.loopbackModel.app.models.Locale
             .definition.settings.relations.language ?
             { include: ['language', 'country'] } : {};
-        const locales = await this[this.modelName].app
+        const locales = await this.loopbackModel.app
             .models.Locale.find(localesFilter);
         const preparedLocales = locales.map((locale) => {
             const result = locale.toJSON();
