@@ -39,12 +39,12 @@ module.exports = class TranslationHandler {
                 // Note: The registered function will have the model class scope
 
                 // POST - Create translations
-                model.registerHook('beforeRemote', 'create', this.prepareRequestData);
-                model.registerHook('afterRemote', 'create', this.createTranslations);
+                model.registerHook('beforeRemote', 'create', this.prepareRequestData, this);
+                model.registerHook('afterRemote', 'create', this.createTranslations, this);
 
                 // PATCH - Update translations
-                model.registerHook('beforeRemote', 'patchOrCreate', this.updateTranslations);
-                model.registerHook('beforeRemote', 'prototype.patchAttributes', this.updateTranslations);
+                model.registerHook('beforeRemote', 'patchOrCreate', this.updateTranslations, this);
+                model.registerHook('beforeRemote', 'prototype.patchAttributes', this.updateTranslations, this);
 
                 // DELETE - Delete translations
                 model.registerHook('beforeRemote', 'deleteById', this.deleteTranslations);
@@ -100,7 +100,7 @@ module.exports = class TranslationHandler {
      * @param  {Object}  instance loopback entity instance
      * @return {Promise}     stops the middle ware chain if true
      */
-    async createTranslations(ctx, instance) {
+    async createTranslations(ctx, instance, translationHandlerContext) {
         // No Translations
         const data = ctx.args.originalData;
         if (!data.translations) {
@@ -114,7 +114,7 @@ module.exports = class TranslationHandler {
         const translationConfig = this.loopbackModel.definition.settings
             .relations.translations;
 
-        TranslationHandler.checkForDublicatedLocales(data.translations);
+        translationHandlerContext.checkForDublicatedLocales(data.translations);
 
         const translationsToCreate = data.translations.map((translation) => {
             const translationToCreate = translation;
@@ -137,7 +137,7 @@ module.exports = class TranslationHandler {
      * @param  {Object}  ctx the request context
      * @return {Promise}     stops the middle ware chain if true
      */
-    async updateTranslations(ctx) {
+    async updateTranslations(ctx, instance, translationHandlerContext) {
         const originalData = ctx.args.data;
         const translationConfig = this.loopbackModel.definition.settings
             .translations;
@@ -151,7 +151,7 @@ module.exports = class TranslationHandler {
             return false;
         }
 
-        TranslationHandler.checkForDublicatedLocales(originalData.translations);
+        translationHandlerContext.checkForDublicatedLocales(originalData.translations);
 
         // Update request data to be a valid model instance in strict mode
         Object.keys(modelPropperties).forEach((property) => {
@@ -164,13 +164,11 @@ module.exports = class TranslationHandler {
 
         // shorthand for the relationModel upsert function
         const relationModel = this.loopbackModel.app.models[translationRelationConfig.model];
-        let { upsert } = relationModel;
-        upsert = upsert.bind(relationModel);
 
         // Update all translations, errors will be catched by the registerHook
         // function
         await Promise.all(originalData.translations
-            .map(translation => upsert(translation)));
+            .map(translation => relationModel.upsert(translation)));
 
         // don't stop the Middleware chain; Call the next function from the
         // original hook
@@ -178,7 +176,7 @@ module.exports = class TranslationHandler {
     }
 
     /**
-     * Delte all related translations for a given record
+     * Delete all related translations for a given record
      *
      * @param  {Object}  ctx the request context
      * @return {Promise}     stops the middle ware chain if true
@@ -307,7 +305,7 @@ module.exports = class TranslationHandler {
             return {};
         }
 
-        // Check the next translation in the fallback chain
+        // Check the next translation in the fall-back chain
         return this.getFallbackTranslation({ translations, acceptHeaders, locales });
     }
 
@@ -317,11 +315,13 @@ module.exports = class TranslationHandler {
      * @param  {Array} translations An array with transaltion objects
      * @return {void}
      */
-    static checkForDublicatedLocales(translations) {
+    checkForDublicatedLocales(translations) {
         const usedLocales = [];
         translations.forEach((translation) => {
             if (usedLocales.includes(translation.locale_id)) {
-                throw new MicroserviceError('Translation for locale already exists', translation);
+                throw new MicroserviceError(`Translation for locale already
+                    exists. This means you are triing to save multiple translations
+                    with the same locale.`, translation);
             }
             usedLocales.push(translation.locale_id);
         });
