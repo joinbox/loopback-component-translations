@@ -114,7 +114,7 @@ module.exports = class TranslationHandler {
         const translationConfig = this.loopbackModel.definition.settings
             .relations.translations;
 
-        translationHandlerContext.checkForDublicatedLocales(data.translations);
+        translationHandlerContext.checkForDuplicatedLocales(data.translations);
 
         const translationsToCreate = data.translations.map((translation) => {
             const translationToCreate = translation;
@@ -151,7 +151,7 @@ module.exports = class TranslationHandler {
             return false;
         }
 
-        translationHandlerContext.checkForDublicatedLocales(originalData.translations);
+        translationHandlerContext.checkForDuplicatedLocales(originalData.translations);
 
         // Update request data to be a valid model instance in strict mode
         Object.keys(modelPropperties).forEach((property) => {
@@ -315,7 +315,7 @@ module.exports = class TranslationHandler {
      * @param  {Array} translations An array with transaltion objects
      * @return {void}
      */
-    checkForDublicatedLocales(translations) {
+    checkForDuplicatedLocales(translations) {
         const usedLocales = [];
         translations.forEach((translation) => {
             if (usedLocales.includes(translation.locale_id)) {
