@@ -24,7 +24,7 @@ class LanguageHeaderParser {
             .split(/\s*,\s*/gi)
             .map((item) => {
                 // eslint-disable-next-line no-useless-escape
-                const parsed = /([a-z]{2}|[\*]{1})-?([a-z]{2})?(?:\s*;\s*q\s*=\s*([0-9\.]+))?/gi.exec(item);
+                const parsed = /([a-z]{2}|[\*]{1})[-|_]?([a-z]{2})?(?:\s*;\s*q\s*=\s*([0-9\.]+))?/gi.exec(item);
                 if (!parsed) return null;
 
                 return {
