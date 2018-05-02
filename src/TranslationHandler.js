@@ -193,7 +193,7 @@ module.exports = class TranslationHandler {
         if (!ctx.req.parsedHeaders || !ctx.req.headers['accept-language']) {
             return;
         }
-        const hasMultipleResults = instance instanceof Array;
+        const hasMultipleResults = Array.isArray(instance);
 
         const translationConfig = this.loopbackModel.definition.settings
             .translations;
@@ -312,16 +312,17 @@ module.exports = class TranslationHandler {
     /**
      * Check if multiple translations have the same locale_id
      *
-     * @param  {Array} translations An array with transaltion objects
+     * @param  {Array} translations An array with translation objects
      * @return {void}
      */
     checkForDuplicatedLocales(translations) {
         const usedLocales = [];
         translations.forEach((translation) => {
             if (usedLocales.includes(translation.locale_id)) {
-                throw new MicroserviceError(`Translation for locale already
-                    exists. This means you are triing to save multiple translations
-                    with the same locale.`, translation);
+                throw new MicroserviceError(`Translation for locale with the id 
+                ${translation.locale_id} already exists. 
+                This means you are trying to save multiple translations
+                with the same locale.`, translation);
             }
             usedLocales.push(translation.locale_id);
         });
