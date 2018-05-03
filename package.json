@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/saia-burgess-controls/loopback-component-translations/#readme",
   "dependencies": {
-    "@joinbox/loopback-microservice": "git+https://github.com/joinbox/loopback-microservice.git#feature/base-model",
+    "@joinbox/loopback-microservice": "git+https://github.com/joinbox/loopback-microservice.git#master",
     "loopback": "^3.17.1",
     "loopback-ds-timestamp-mixin": "^3.4.1",
     "strong-error-handler": "^2.3.1"
