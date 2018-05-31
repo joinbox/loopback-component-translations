@@ -97,6 +97,7 @@ describe('Translations Integration Test', () => {
         expect(createResponse.status).to.equals(200);
 
         const getEndpoint = `${endPointUrl}${createResponse.body.id}`;
+
         const getResponse = await this.service.api.request
             .get(getEndpoint)
             .set('Accept-Language', 'de-ch, en-GB, DE_LU');

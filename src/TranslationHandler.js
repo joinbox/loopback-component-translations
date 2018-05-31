@@ -215,7 +215,7 @@ module.exports = class TranslationHandler {
             .models.Locale.find(localesFilter);
         const preparedLocales = locales.map((locale) => {
             const result = locale.toJSON();
-            result.locale = `${locale.language['iso-2-char']}-${locale.country.short}`.toLowerCase();
+            result.locale = `${locale.language['iso-2-char']}-${locale.country['iso-2-char']}`.toLowerCase();
 
             return result;
         });
@@ -253,7 +253,7 @@ module.exports = class TranslationHandler {
                     translations: modelTranslations,
                     locales: preparedLocales,
                 });
-
+            
             translationConfig.forEach((translatedProperty) => {
                 // eslint-disable-next-line no-param-reassign
                 instance[translatedProperty] = translation[translatedProperty] ?
@@ -269,8 +269,8 @@ module.exports = class TranslationHandler {
         if (searchHeader.language !== '' && searchHeader.country !== '') {
             // Header has a locale specified
             locale = locales.find((searchLocale) => {
-                return searchLocale.country.short.toLowerCase() === searchHeader.country &&
-                searchLocale.language['iso-2-char'].toLowerCase() === searchHeader.language
+                return searchLocale.country['iso-2-char'].toLowerCase() === searchHeader.country &&
+                searchLocale.language['iso-2-char'].toLowerCase() === searchHeader.language;
             });
         } else if (
             // Header has a language specified
@@ -280,7 +280,7 @@ module.exports = class TranslationHandler {
         ) {
             locale = locales.find((searchLocale) => {
                 return searchLocale.language['iso-2-char'].toLowerCase() === searchHeader.language &&
-                searchLocale.default === true;
+                searchLocale.isDefaultForLanguage === true;
             });
         } else {
             // Header has * specified, parsed as language
@@ -290,7 +290,7 @@ module.exports = class TranslationHandler {
                     return searchLocale.id === translations[0].locale_id;
                 }
 
-                return false
+                return false;
             });
         }
 
