@@ -3,14 +3,14 @@
     "updated": "2018-03-20T13:52:57.793Z",
     "language": {
         "name": "German",
-        "iso-3-char": "DEU",
-        "iso-2-char": "DE",
+        "iso3": "DEU",
+        "iso2": "DE",
         "created": "2018-03-14T12:11:07.639Z",
         "updated": "2018-03-14T12:11:07.639Z"
     },
     "country": {
         "name": "Switzerland",
-        "iso-2-char": "CH",
+        "iso2": "CH",
         "created": "2018-03-20T13:52:25.676Z",
         "updated": "2018-03-20T13:52:25.676Z"
     },
@@ -20,14 +20,14 @@
     "updated": "2018-03-20T13:52:57.793Z",
     "language": {
         "name": "French",
-        "iso-3-char": "FRA",
-        "iso-2-char": "FR",
+        "iso3": "FRA",
+        "iso2": "FR",
         "created": "2018-03-14T12:11:07.639Z",
         "updated": "2018-03-14T12:11:07.639Z"
     },
     "country": {
         "name": "Switzerland",
-        "iso-2-char": "CH",
+        "iso2": "CH",
         "created": "2018-03-20T13:52:25.676Z",
         "updated": "2018-03-20T13:52:25.676Z"
     },
@@ -39,14 +39,14 @@
     "updated": "2018-03-20T13:52:57.793Z",
     "language": {
         "name": "Italian",
-        "iso-3-char": "ITA",
-        "iso-2-char": "IT",
+        "iso3": "ITA",
+        "iso2": "IT",
         "created": "2018-03-14T12:11:07.639Z",
         "updated": "2018-03-14T12:11:07.639Z"
     },
     "country": {
         "name": "Switzerland",
-        "iso-2-char": "CH",
+        "iso2": "CH",
         "created": "2018-03-20T13:52:25.676Z",
         "updated": "2018-03-20T13:52:25.676Z"
     },
@@ -56,14 +56,14 @@
     "updated": "2018-03-20T13:52:57.793Z",
     "language": {
         "name": "German",
-        "iso-3-char": "DEU",
-        "iso-2-char": "DE",
+        "iso3": "DEU",
+        "iso2": "DE",
         "created": "2018-03-14T12:11:07.639Z",
         "updated": "2018-03-14T12:11:07.639Z"
     },
     "country": {
         "name": "Germany",
-        "iso-2-char": "DE",
+        "iso2": "DE",
         "created": "2018-03-20T13:52:25.676Z",
         "updated": "2018-03-20T13:52:25.676Z"
     },
@@ -73,14 +73,14 @@
     "updated": "2018-03-20T13:52:57.793Z",
     "language": {
         "name": "German",
-        "iso-3-char": "DEU",
-        "iso-2-char": "DE",
+        "iso3": "DEU",
+        "iso2": "DE",
         "created": "2018-03-14T12:11:07.639Z",
         "updated": "2018-03-14T12:11:07.639Z"
     },
     "country": {
         "name": "Austria",
-        "iso-2-char": "AT",
+        "iso2": "AT",
         "created": "2018-03-20T13:52:25.676Z",
         "updated": "2018-03-20T13:52:25.676Z"
     },
@@ -90,14 +90,14 @@
     "updated": "2018-03-20T13:52:57.793Z",
     "language": {
         "name": "French",
-        "iso-3-char": "FRA",
-        "iso-2-char": "FR",
+        "iso3": "FRA",
+        "iso2": "FR",
         "created": "2018-03-14T12:11:07.639Z",
         "updated": "2018-03-14T12:11:07.639Z"
     },
     "country": {
         "name": "Fance",
-        "iso-2-char": "FR",
+        "iso2": "FR",
         "created": "2018-03-20T13:52:25.676Z",
         "updated": "2018-03-20T13:52:25.676Z"
     },
@@ -107,14 +107,14 @@
     "updated": "2018-03-20T13:52:57.793Z",
     "language": {
         "name": "German",
-        "iso-3-char": "DEU",
-        "iso-2-char": "DE",
+        "iso3": "DEU",
+        "iso2": "DE",
         "created": "2018-03-14T12:11:07.639Z",
         "updated": "2018-03-14T12:11:07.639Z"
     },
     "country": {
         "name": "Switzerland",
-        "iso-2-char": "CH",
+        "iso2": "CH",
         "created": "2018-03-20T13:52:25.676Z",
         "updated": "2018-03-20T13:52:25.676Z"
     },
@@ -124,14 +124,14 @@
     "updated": "2018-03-20T13:52:57.793Z",
     "language": {
         "name": "Dutch",
-        "iso-3-char": "NLD",
-        "iso-2-char": "NL",
+        "iso3": "NLD",
+        "iso2": "NL",
         "created": "2018-03-14T12:11:07.639Z",
         "updated": "2018-03-14T12:11:07.639Z"
     },
     "country": {
         "name": "Netherldands",
-        "iso-2-char": "NL",
+        "iso2": "NL",
         "created": "2018-03-20T13:52:25.676Z",
         "updated": "2018-03-20T13:52:25.676Z"
     },
@@ -141,14 +141,14 @@
     "updated": "2018-03-20T13:52:57.793Z",
     "language": {
         "name": "Italian",
-        "iso-3-char": "ITA",
-        "iso-2-char": "IT",
+        "iso3": "ITA",
+        "iso2": "IT",
         "created": "2018-03-14T12:11:07.639Z",
         "updated": "2018-03-14T12:11:07.639Z"
     },
     "country": {
         "name": "Italy",
-        "iso-2-char": "IT",
+        "iso2": "IT",
         "created": "2018-03-20T13:52:25.676Z",
         "updated": "2018-03-20T13:52:25.676Z"
     },
@@ -158,14 +158,14 @@
     "updated": "2018-03-20T13:52:57.793Z",
     "language": {
         "name": "English",
-        "iso-3-char": "ENG",
-        "iso-2-char": "EN",
+        "iso3": "ENG",
+        "iso2": "EN",
         "created": "2018-03-14T12:11:07.639Z",
         "updated": "2018-03-14T12:11:07.639Z"
     },
     "country": {
         "name": "United Kingdom",
-        "iso-2-char": "GB",
+        "iso2": "GB",
         "created": "2018-03-20T13:52:25.676Z",
         "updated": "2018-03-20T13:52:25.676Z"
     },
@@ -175,14 +175,14 @@
     "updated": "2018-03-20T13:52:57.793Z",
     "language": {
         "name": "French",
-        "iso-3-char": "FRA",
-        "iso-2-char": "FR",
+        "iso3": "FRA",
+        "iso2": "FR",
         "created": "2018-03-14T12:11:07.639Z",
         "updated": "2018-03-14T12:11:07.639Z"
     },
     "country": {
         "name": "Belgium",
-        "iso-2-char": "BE",
+        "iso2": "BE",
         "created": "2018-03-20T13:52:25.676Z",
         "updated": "2018-03-20T13:52:25.676Z"
     },
@@ -192,14 +192,14 @@
     "updated": "2018-03-20T13:52:57.793Z",
     "language": {
         "name": "Dutch",
-        "iso-3-char": "NLD",
-        "iso-2-char": "NL",
+        "iso3": "NLD",
+        "iso2": "NL",
         "created": "2018-03-14T12:11:07.639Z",
         "updated": "2018-03-14T12:11:07.639Z"
     },
     "country": {
         "name": "Belgium",
-        "iso-2-char": "BE",
+        "iso2": "BE",
         "created": "2018-03-20T13:52:25.676Z",
         "updated": "2018-03-20T13:52:25.676Z"
     },
@@ -209,14 +209,14 @@
     "updated": "2018-03-20T13:52:57.793Z",
     "language": {
         "name": "French",
-        "iso-3-char": "FRA",
-        "iso-2-char": "FR",
+        "iso3": "FRA",
+        "iso2": "FR",
         "created": "2018-03-14T12:11:07.639Z",
         "updated": "2018-03-14T12:11:07.639Z"
     },
     "country": {
         "name": "Luxembourg",
-        "iso-2-char": "LU",
+        "iso2": "LU",
         "created": "2018-03-20T13:52:25.676Z",
         "updated": "2018-03-20T13:52:25.676Z"
     },
@@ -226,14 +226,14 @@
     "updated": "2018-03-20T13:52:57.793Z",
     "language": {
         "name": "German",
-        "iso-3-char": "DEU",
-        "iso-2-char": "DE",
+        "iso3": "DEU",
+        "iso2": "DE",
         "created": "2018-03-14T12:11:07.639Z",
         "updated": "2018-03-14T12:11:07.639Z"
     },
     "country": {
         "name": "Luxembourg",
-        "iso-2-char": "LU",
+        "iso2": "LU",
         "created": "2018-03-20T13:52:25.676Z",
         "updated": "2018-03-20T13:52:25.676Z"
     },

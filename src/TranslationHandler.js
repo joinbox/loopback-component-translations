@@ -215,7 +215,7 @@ module.exports = class TranslationHandler {
             .models.Locale.find(localesFilter);
         const preparedLocales = locales.map((locale) => {
             const result = locale.toJSON();
-            result.locale = `${locale.language['iso-2-char']}-${locale.country['iso-2-char']}`.toLowerCase();
+            result.locale = `${locale.language['iso2']}-${locale.country['iso2']}`.toLowerCase();
 
             return result;
         });
@@ -253,7 +253,7 @@ module.exports = class TranslationHandler {
                     translations: modelTranslations,
                     locales: preparedLocales,
                 });
-            
+
             translationConfig.forEach((translatedProperty) => {
                 // eslint-disable-next-line no-param-reassign
                 instance[translatedProperty] = translation[translatedProperty] ?
@@ -269,8 +269,8 @@ module.exports = class TranslationHandler {
         if (searchHeader.language !== '' && searchHeader.country !== '') {
             // Header has a locale specified
             locale = locales.find((searchLocale) => {
-                return searchLocale.country['iso-2-char'].toLowerCase() === searchHeader.country &&
-                searchLocale.language['iso-2-char'].toLowerCase() === searchHeader.language;
+                return searchLocale.country['iso2'].toLowerCase() === searchHeader.country &&
+                searchLocale.language['iso2'].toLowerCase() === searchHeader.language;
             });
         } else if (
             // Header has a language specified
@@ -279,7 +279,7 @@ module.exports = class TranslationHandler {
             searchHeader.country === ''
         ) {
             locale = locales.find((searchLocale) => {
-                return searchLocale.language['iso-2-char'].toLowerCase() === searchHeader.language &&
+                return searchLocale.language['iso2'].toLowerCase() === searchHeader.language &&
                 searchLocale.isDefaultForLanguage === true;
             });
         } else {
@@ -319,8 +319,8 @@ module.exports = class TranslationHandler {
         const usedLocales = [];
         translations.forEach((translation) => {
             if (usedLocales.includes(translation.locale_id)) {
-                throw new MicroserviceError(`Translation for locale with the id 
-                ${translation.locale_id} already exists. 
+                throw new MicroserviceError(`Translation for locale with the id
+                ${translation.locale_id} already exists.
                 This means you are trying to save multiple translations
                 with the same locale.`, translation);
             }
