@@ -9,7 +9,7 @@
     "test:base": "mocha $NODE_DEBUG_OPTION $WATCH_TESTS --recursive --check-leaks --full-trace --exit",
     "test:unit": "npm run test:base ./test/support/setup/unit.js ./test/unit",
     "test:integration": "npm run test:base ./test/support/setup/integration.js ./test/integration",
-    "test": "npm run test:base ./test/support/setup/integration.js ./test/integration ./test/unit"
+    "test": "./node_modules/.bin/nyc npm run test:base ./test/support/setup/integration.js ./test/integration ./test/unit"
   },
   "repository": {
     "type": "git",
@@ -17,8 +17,7 @@
   },
   "keywords": [
     "loopbacl",
-    "permission",
-    "permission-tree"
+    "translations"
   ],
   "author": "Lorenzo Kappeler",
   "license": "MIT",
@@ -31,20 +30,21 @@
   },
   "homepage": "https://github.com/saia-burgess-controls/loopback-component-translations/#readme",
   "dependencies": {
-    "@joinbox/loopback-microservice": "git+https://github.com/joinbox/loopback-microservice.git#master",
-    "loopback": "^3.17.1",
+    "loopback": "^3.20.0",
     "loopback-ds-timestamp-mixin": "^3.4.1",
     "strong-error-handler": "^2.3.1"
   },
   "devDependencies": {
     "@joinbox/eslint-config-joinbox": ">=1.0.0",
+    "@joinbox/loopback-microservice": ">=1.0.0",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "eslint": "^4.12.1",
     "loopback-component-explorer": "^5.3.0",
     "loopback-dummy-project": "^1.1.0",
     "mocha": "^4.0.1",
-    "nock": "^9.1.5",
-    "npm": "^5.5.1"
+    "nock": "^9.4.1",
+    "npm": "^5.10.0",
+    "nyc": "^12.0.2"
   }
 }

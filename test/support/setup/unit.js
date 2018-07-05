@@ -9,7 +9,7 @@ before('boot microservice', async function() {
     const modelsRootDir = appConfigRootDir;
     const middlewareRootDir = appConfigRootDir;
     const componentRootDir = appConfigRootDir;
-    const options = {
+    const boot = {
         appRootDir,
         appConfigRootDir,
         bootDirs: [`${appRootDir}/boot`, projectBootDir],
@@ -20,5 +20,5 @@ before('boot microservice', async function() {
         dsRootDir,
     };
 
-    this.service = await Microservice.boot(options);
+    this.service = await Microservice.boot({ boot });
 });
