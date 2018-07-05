@@ -37,6 +37,11 @@
             "type": "hasMany",
             "model": "TranslationDummyLocale",
             "foreignKey": "translationdummy_id"
+        },
+        "children": {
+            "type": "hasAndBelongsToMany",
+            "model": "TranslationDummy",
+            "foreignKey": "translationdummy_id"
         }
     },
     "acls": [],

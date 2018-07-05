@@ -3,6 +3,7 @@ const TestDataProvider = require('./TestDataProvider');
 
 describe('Translations Integration Test', () => {
     const endPointUrl = 'http://localhost:60001/api/TranslationDummy/';
+    const linkPath = '/children/rel/';
 
     it('returns a valid response', async function() {
         const response = await this.service.api.request.get(endPointUrl);
@@ -220,6 +221,50 @@ describe('Translations Integration Test', () => {
             expect(entity).to.have.property('name');
             expect(entity).to.have.property('description');
         });
+
+    });
+
+    it('returns translations for included relations', async function() {
+        const testData = TestDataProvider.getTestData();
+
+        const createResponse = await this.service.api.request
+            .post(endPointUrl)
+            .send(testData);
+        expect(createResponse.status).to.equals(200);
+        const createResponse2 = await this.service.api.request
+            .post(endPointUrl)
+            .send(testData);
+        expect(createResponse2.status).to.equals(200);
+
+        const linkEndpoint = `${endPointUrl}${createResponse.body.id}${linkPath}${createResponse2.body.id}`;
+
+        const createResponse3 = await this.service.api.request
+            .put(linkEndpoint);
+        expect(createResponse2.status).to.equals(200);
+
+        const getEndpoint = `${endPointUrl}`;
+        const getResponse = await this.service.api.request
+            .get(getEndpoint)
+            .query({
+                filter: {
+                    include: {
+                        relation: 'children',
+                    },
+                    where: {
+                        id: createResponse.body.id,
+                    },
+                },
+            })
+            .set('Accept-Language', '*');
+
+        expect(getResponse.status).to.equals(200);
+        const result = getResponse.body[0];
+        const child = result.children[0];
+
+        expect(result).to.have.property('name', 'testname Translation One');
+        expect(result).to.have.property('description', 'Translation One testDescription');
+        expect(child).to.have.property('description', 'Translation One testDescription');
+        expect(child).to.have.property('description', 'Translation One testDescription');
 
     });
 });
