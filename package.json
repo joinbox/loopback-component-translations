@@ -9,7 +9,7 @@
     "test:base": "mocha $NODE_DEBUG_OPTION $WATCH_TESTS --recursive --check-leaks --full-trace --exit",
     "test:unit": "npm run test:base ./test/support/setup/unit.js ./test/unit",
     "test:integration": "npm run test:base ./test/support/setup/integration.js ./test/integration",
-    "test": "./node_modules/.bin/nyc npm run test:base ./test/support/setup/integration.js ./test/integration ./test/unit"
+    "test": "npm run test:base ./test/support/setup/integration.js ./test/integration ./test/unit"
   },
   "repository": {
     "type": "git",

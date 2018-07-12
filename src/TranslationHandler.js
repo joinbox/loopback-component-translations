@@ -2,8 +2,6 @@ const Microservice = require('@joinbox/loopback-microservice');
 
 const MicroserviceError = Microservice.Error;
 
-const log = require('ee-log');
-
 /**
  * Registers REST-Hooks for POST, PATCH, DELETE and GET methods.
  * The hooks are registerd based on the model configurations.
