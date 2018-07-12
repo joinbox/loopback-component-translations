@@ -186,6 +186,14 @@ module.exports = class TranslationHandler {
         return locales;
     }
 
+    /**
+     * Write the paresd headers to the loopback contexts
+     * so it can be accessed inside an operation hook
+     *
+     * @param {Object} ctx
+     * @param {Object} instance
+     * @param {Function} next
+     */
     propagateFallback(ctx, instance, next) {
         // Nothing to propagate if no language is accepted
         if (!ctx.req.parsedHeaders || !ctx.req.headers['accept-language']) {
@@ -193,7 +201,7 @@ module.exports = class TranslationHandler {
         }
 
         ctx.args.options.parsedHeaders = ctx.req.parsedHeaders;
-        next();
+        return next();
     }
 
     /**
