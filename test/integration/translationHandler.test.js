@@ -21,20 +21,6 @@ describe('Translations Integration Test', () => {
         expect(response.body).to.not.have.property('name');
     });
 
-    it('rejects translations with the same locales', async function() {
-        const testData = TestDataProvider.getTestData();
-        testData.translations[1].locale_id = 1;
-
-        const response = await this.service.api.request
-            .post(endPointUrl)
-            .send(testData)
-            .catch((error) => {
-                expect(error.status).to.equals(500);
-            });
-
-        expect(response).to.equals(undefined);
-    });
-
     it('updates translations when updating the according entity with translation data', async function() {
         const testData = TestDataProvider.getTestData();
         const updateTestData = TestDataProvider.getTestData();
@@ -309,4 +295,19 @@ describe('Translations Integration Test', () => {
             expect(entity).to.have.property('description').to.be.a('string');
         });
     });
+
+    it('returns an error if a translation with a duplicated locale is sent', async function() {
+        const testData = TestDataProvider.getTestData();
+        testData.translations[1].locale_id = 1;
+
+        const createResponse = await this.service.api.request
+            .post(endPointUrl)
+            .ok(res => res.status < 500)
+            .send(testData);
+
+
+        expect(createResponse.status).to.equal(400);
+        expect(createResponse.body.error).to.have.property('message', 'Translation for locale with the id 1 already exists.This means you are trying to save multiple translationswith the same locale.');
+    });
+
 });

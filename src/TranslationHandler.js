@@ -308,7 +308,6 @@ module.exports = class TranslationHandler {
             return {};
         }
 
-
         if (searchHeader.language !== '' && searchHeader.country !== '') {
             // Header has a locale specified
             locale = locales.find((searchLocale) => {
@@ -356,15 +355,19 @@ module.exports = class TranslationHandler {
      * @return {void}
      */
     checkForDuplicatedLocales(translations) {
-        const usedLocales = [];
+        const usedLocales = new Map();
         translations.forEach((translation) => {
-            if (usedLocales.includes(translation.locale_id)) {
-                throw new MicroserviceError(`Translation for locale with the id
-                ${translation.locale_id} already exists.
-                This means you are trying to save multiple translations
-                with the same locale.`, translation);
+            if (usedLocales.has(translation.locale_id)) {
+                throw new MicroserviceError(
+                    'Translation for locale with the id ' +
+                    `${translation.locale_id} already exists.` +
+                    'This means you are trying to save multiple translations' +
+                    'with the same locale.', {
+                        status: 400,
+                        translation,
+                    });
             }
-            usedLocales.push(translation.locale_id);
+            usedLocales.set(translation.locale_id);
         });
     }
 };
