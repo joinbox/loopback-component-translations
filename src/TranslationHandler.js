@@ -303,6 +303,12 @@ module.exports = class TranslationHandler {
         const searchHeader = acceptHeaders.shift();
         let locale;
 
+        if (!searchHeader) {
+            // No more locales to search, no translation found
+            return {};
+        }
+
+
         if (searchHeader.language !== '' && searchHeader.country !== '') {
             // Header has a locale specified
             locale = locales.find((searchLocale) => {
@@ -337,9 +343,6 @@ module.exports = class TranslationHandler {
         if (translation) {
             // Hit return translation
             return translation;
-        } else if (acceptHeaders.length === 0) {
-            // No more locales to search, no translation found
-            return {};
         }
 
         // Check the next translation in the fall-back chain
