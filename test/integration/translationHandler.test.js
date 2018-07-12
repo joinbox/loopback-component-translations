@@ -17,7 +17,6 @@ describe('Translations Integration Test', () => {
             .post(endPointUrl)
             .send(testData);
 
-        expect(response.body).to.have.property('id', 1);
         expect(response.body).to.have.property('noTranslate', 'noTranslateTest');
         expect(response.body).to.not.have.property('name');
     });
@@ -89,7 +88,7 @@ describe('Translations Integration Test', () => {
         expect(deleteResponse.body).to.have.property('count', 1);
     });
 
-    it('returns existing translation accorrding to Accept-Language header de-ch', async function() {
+    it('returns existing translation according to Accept-Language header de-ch', async function() {
         const testData = TestDataProvider.getTestData();
 
         const createResponse = await this.service.api.request
@@ -108,7 +107,7 @@ describe('Translations Integration Test', () => {
         expect(getResponse.body).to.have.property('description', 'Translation One testDescription');
     });
 
-    it('returns existing translation accorrding to Accept-Language header fr-ch', async function() {
+    it('returns existing translation according to Accept-Language header fr-ch', async function() {
         const testData = TestDataProvider.getTestData();
 
         const createResponse = await this.service.api.request
@@ -126,7 +125,7 @@ describe('Translations Integration Test', () => {
         expect(getResponse.body).to.have.property('description', 'Translation Two testDescription');
     });
 
-    it('returns existing translation accorrding to Accept-Language header de-ch;q=0.5, fr-ch;q=1', async function() {
+    it('returns existing translation according to Accept-Language header de-ch;q=0.5, fr-ch;q=1', async function() {
         const testData = TestDataProvider.getTestData();
 
         const createResponse = await this.service.api.request
@@ -144,7 +143,7 @@ describe('Translations Integration Test', () => {
         expect(getResponse.body).to.have.property('description', 'Translation Two testDescription');
     });
 
-    it('returns empty translation accorrding to Accept-Language header en-gb', async function() {
+    it('returns empty translation according to Accept-Language header en-gb', async function() {
         const testData = TestDataProvider.getTestData();
 
         const createResponse = await this.service.api.request
@@ -231,6 +230,12 @@ describe('Translations Integration Test', () => {
             .post(endPointUrl)
             .send(testData);
         expect(createResponse.status).to.equals(200);
+
+        testData.translations[0].name = 'Child Name';
+        testData.translations[1].name = 'Child Name';
+        testData.translations[0].description = 'Child Description';
+        testData.translations[1].description = 'Child Description';
+
         const createResponse2 = await this.service.api.request
             .post(endPointUrl)
             .send(testData);
@@ -240,7 +245,7 @@ describe('Translations Integration Test', () => {
 
         const createResponse3 = await this.service.api.request
             .put(linkEndpoint);
-        expect(createResponse2.status).to.equals(200);
+        expect(createResponse3.status).to.equals(200);
 
         const getEndpoint = `${endPointUrl}`;
         const getResponse = await this.service.api.request
@@ -261,10 +266,47 @@ describe('Translations Integration Test', () => {
         const result = getResponse.body[0];
         const child = result.children[0];
 
+
+        expect(result).to.have.property('id', createResponse.body.id);
         expect(result).to.have.property('name', 'testname Translation One');
         expect(result).to.have.property('description', 'Translation One testDescription');
-        expect(child).to.have.property('description', 'Translation One testDescription');
-        expect(child).to.have.property('description', 'Translation One testDescription');
+        expect(child).to.have.property('id', createResponse2.body.id);
+        expect(child).to.have.property('name', 'Child Name');
+        expect(child).to.have.property('description', 'Child Description');
+    });
 
+
+    it('propagates the translations to all returned entities', async function() {
+        const testData = TestDataProvider.getTestData();
+
+        const createResponse = await this.service.api.request
+            .post(endPointUrl)
+            .send(testData);
+        expect(createResponse.status).to.equals(200);
+
+        const createResponse2 = await this.service.api.request
+            .post(endPointUrl)
+            .send(testData);
+        expect(createResponse2.status).to.equals(200);
+
+        const getEndpoint = `${endPointUrl}`;
+        const getResponse = await this.service.api.request
+            .get(getEndpoint)
+            .query({
+                filter: {
+                    include: {
+                        relation: 'children',
+                    },
+                },
+            })
+            .set('Accept-Language', '*');
+
+        expect(getResponse.status).to.equals(200);
+        const result = getResponse.body;
+
+        result.forEach((entity) => {
+            expect(entity).to.have.property('name').to.be.a('string');
+            expect(entity).to.have.property('description').to.be.a('string');
+        });
     });
 });

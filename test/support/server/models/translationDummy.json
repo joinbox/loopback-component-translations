@@ -39,9 +39,11 @@
             "foreignKey": "translationdummy_id"
         },
         "children": {
-            "type": "hasAndBelongsToMany",
+            "type": "hasMany",
             "model": "TranslationDummy",
-            "foreignKey": "translationdummy_id"
+            "foreignKey": "translationdummy_id",
+            "keyThrough": "parent_id",
+            "through": "TranslationDummy_Children"
         }
     },
     "acls": [],

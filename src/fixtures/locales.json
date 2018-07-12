@@ -1,6 +1,7 @@
 [{
     "created": "2018-03-20T13:52:57.793Z",
     "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "de-ch",
     "language": {
         "name": "German",
         "iso3": "DEU",
@@ -18,6 +19,7 @@
 }, {
     "created": "2018-03-20T13:52:57.793Z",
     "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "fr-ch",
     "language": {
         "name": "French",
         "iso3": "FRA",
@@ -37,6 +39,7 @@
     "country_id": 2,
     "created": "2018-03-20T13:52:57.793Z",
     "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "it-ch",
     "language": {
         "name": "Italian",
         "iso3": "ITA",
@@ -54,6 +57,7 @@
 }, {
     "created": "2018-03-20T13:52:57.793Z",
     "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "de-de",
     "language": {
         "name": "German",
         "iso3": "DEU",
@@ -71,6 +75,7 @@
 }, {
     "created": "2018-03-20T13:52:57.793Z",
     "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "de-at",
     "language": {
         "name": "German",
         "iso3": "DEU",
@@ -88,6 +93,7 @@
 }, {
     "created": "2018-03-20T13:52:57.793Z",
     "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "fr-fr",
     "language": {
         "name": "French",
         "iso3": "FRA",
@@ -105,23 +111,7 @@
 }, {
     "created": "2018-03-20T13:52:57.793Z",
     "updated": "2018-03-20T13:52:57.793Z",
-    "language": {
-        "name": "German",
-        "iso3": "DEU",
-        "iso2": "DE",
-        "created": "2018-03-14T12:11:07.639Z",
-        "updated": "2018-03-14T12:11:07.639Z"
-    },
-    "country": {
-        "name": "Switzerland",
-        "iso2": "CH",
-        "created": "2018-03-20T13:52:25.676Z",
-        "updated": "2018-03-20T13:52:25.676Z"
-    },
-    "isDefaultForLanguage": false
-}, {
-    "created": "2018-03-20T13:52:57.793Z",
-    "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "nl-nl",
     "language": {
         "name": "Dutch",
         "iso3": "NLD",
@@ -139,6 +129,7 @@
 }, {
     "created": "2018-03-20T13:52:57.793Z",
     "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "it-it",
     "language": {
         "name": "Italian",
         "iso3": "ITA",
@@ -156,6 +147,7 @@
 }, {
     "created": "2018-03-20T13:52:57.793Z",
     "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "en-gb",
     "language": {
         "name": "English",
         "iso3": "ENG",
@@ -173,6 +165,7 @@
 }, {
     "created": "2018-03-20T13:52:57.793Z",
     "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "fr-be",
     "language": {
         "name": "French",
         "iso3": "FRA",
@@ -190,6 +183,7 @@
 }, {
     "created": "2018-03-20T13:52:57.793Z",
     "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "nl-be",
     "language": {
         "name": "Dutch",
         "iso3": "NLD",
@@ -207,6 +201,7 @@
 }, {
     "created": "2018-03-20T13:52:57.793Z",
     "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "fr-lu",
     "language": {
         "name": "French",
         "iso3": "FRA",
@@ -224,6 +219,7 @@
 }, {
     "created": "2018-03-20T13:52:57.793Z",
     "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "de-lu",
     "language": {
         "name": "German",
         "iso3": "DEU",

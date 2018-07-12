@@ -1,0 +1,45 @@
+{
+    "name": "TranslationDummy_Children",
+    "plural": "TranslationDummies",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "strict": true,
+    "http": {
+        "path": "TranslationDummyChildren"
+    },
+    "options": {
+        "validateUpsert": true,
+        "postgresql": {
+            "schema": "translations",
+            "table": "TranslationDummy"
+        },
+        "translations": [
+            "name",
+            "description"
+        ]
+
+    },
+    "properties": {
+        "translationdummy_id": {
+            "type": "Number"
+        },
+        "parent_id": {
+            "type": "Number"
+        }
+    },
+    "validations": [],
+    "relations": {
+        "parent": {
+            "type": "belongsTo",
+            "model": "TranslationDummy",
+            "foreignKey": "parent_id"
+        },
+        "child": {
+            "type": "belongsTo",
+            "model": "TranslationDummy",
+            "foreignKey": "translationdummy_id"
+        }
+    },
+    "acls": [],
+    "methods": {}
+}

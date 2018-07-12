@@ -22,3 +22,4 @@ before('boot microservice', async function() {
 
     this.service = await Microservice.boot({ boot });
 });
+

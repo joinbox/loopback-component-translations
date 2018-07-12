@@ -2,11 +2,13 @@ const Microservice = require('@joinbox/loopback-microservice');
 
 const MicroserviceError = Microservice.Error;
 
+const log = require('ee-log');
+
 /**
  * Registers REST-Hooks for POST, PATCH, DELETE and GET methods.
  * The hooks are registerd based on the model configurations.
  * See the readme for detailed information about the configuration.
- * The hooks are handlng the CRUD actions for a given entities translations
+ * The hooks are handlng the CRUD actions f      or a given entities translations
  * Translations need to be provided as an array on the property `translations'
  *
  * @type {Class}
@@ -19,6 +21,7 @@ module.exports = class TranslationHandler {
 
     /**
      * Register loopback hooks to handle translations
+     * Defines the translations as model properties
      *
      * @return {void}
      */
@@ -30,13 +33,29 @@ module.exports = class TranslationHandler {
             if (translationConfig) {
                 if (typeof model.registerHook !== 'function') {
                     throw new MicroserviceError(`The model ${model.modelName},
-                        for wich you are using translations provided by the
-                        module 'loopback-comonent-translations' does not have a
+                        for which you are using translations provided by the
+                        module 'loopback-component-translations' does not have a
                         registerHook function. This usually means you did not
                         extend the LoopbackModelBase Class in your model.js`);
                 }
 
-                // Note: The registered function will have the model class scope
+                const { translations } = model.definition.settings;
+                const { modelName } = model;
+
+                if (!Array.isArray(translations)) {
+                    throw new MicroserviceError('The translation configuration for the model ' +
+                    `${modelName} is not a valid array`);
+                }
+
+                // register translatable properties on the loopback model.
+                translations.forEach((translationKey) => {
+                    // Register the translatable property on the loopback model.
+                    model.defineProperty(translationKey, {
+                        type: String,
+                    });
+                });
+
+                // Note: The registered function with registerHook will have the model class scope
 
                 // POST - Create translations
                 model.registerHook('beforeRemote', 'create', this.prepareRequestData, this);
@@ -49,13 +68,17 @@ module.exports = class TranslationHandler {
                 // DELETE - Delete translations
                 model.registerHook('beforeRemote', 'deleteById', this.deleteTranslations);
 
+
+                // pass the accept header to the operation hook
+                model.beforeRemote('find', this.propagateFallback);
+                model.beforeRemote('findById', this.propagateFallback);
+                model.beforeRemote('findOne', this.propagateFallback);
+
                 // GET
                 // - Propagate translations to the model instance
                 // - Handle fall-back
                 // - Implement Search logic
-                model.registerHook('afterRemote', 'find', this.propagateTranslations, this);
-                model.registerHook('afterRemote', 'findById', this.propagateTranslations, this);
-                model.registerHook('afterRemote', 'findOne', this.propagateTranslations, this);
+                model.observe('loaded', this.translate.bind(this));
             }
         });
     }
@@ -78,9 +101,9 @@ module.exports = class TranslationHandler {
         const originalData = ctx.args.data;
         const preparedData = {};
 
-        const modelPropperties = this.loopbackModel.definition.properties;
+        const modelProperties = this.loopbackModel.definition.properties;
 
-        Object.keys(modelPropperties).forEach((property) => {
+        Object.keys(modelProperties).forEach((property) => {
             if (!translations.includes(property) && originalData[property] !== undefined) {
                 preparedData[property] = originalData[property];
             }
@@ -91,6 +114,88 @@ module.exports = class TranslationHandler {
 
         // call next after the async function
         return false;
+    }
+
+    /**
+     * Handles the propagation of the translation values to
+     * their keys. Uses Class functions to load the translations
+     * and locales and to determine the correct fallback for the given
+     * accept language header.
+     *
+     * @param {Object} ctx Current context
+     */
+    async translate(ctx) {
+        if (!ctx.options.parsedHeaders) return;
+
+        const { Model } = ctx;
+        const { translations } = Model.definition.settings;
+        const acceptLanguages = ctx.options.parsedHeaders['accept-language'];
+        const translationRelationConfig = Model.definition.settings.relations.translations;
+
+        const modelTranslations = await this.loadTranslations(Model, ctx.data.id);
+        const locales = await this.getLocales(Model);
+        const translationValues = await this.getFallbackTranslation({
+            acceptHeaders: [...acceptLanguages],
+            translations: modelTranslations
+                .filter(translation =>
+                    translation[translationRelationConfig.foreignKey] === ctx.data.id),
+            locales,
+        });
+
+        translations.forEach((translationKey) => {
+            ctx.data[translationKey] = translationValues[translationKey] || '';
+        });
+
+    }
+
+    /**
+     * Loads all existing translation data form the database
+     * for a given instance
+     *
+     * @param {Object} Model the loopback model
+     * @param {Integer} instanceId the instance id to load the translations fore
+     */
+    async loadTranslations(Model, instanceId) {
+        const translationRelationConfig = Model.definition
+            .settings.relations.translations;
+        const translationsFilter = {
+            order: 'locale_id ASC',
+        };
+        translationsFilter.where = {
+            [translationRelationConfig.foreignKey]: instanceId,
+        };
+
+        return Model.app
+            .models[translationRelationConfig.model]
+            .find(translationsFilter);
+    }
+
+    /**
+     * Loads and returns the locale data from the database
+     *
+     * @param {Object} Model the loopback model
+     */
+    async getLocales(Model) {
+        if (this.locales) return this.locales;
+
+        const localesFilter = Model.app.models.Locale
+            .definition.settings.relations.language ?
+            { include: ['language', 'country'] } : {};
+        const locales = await Model.app
+            .models.Locale.find(localesFilter);
+
+        this.locales = locales;
+        return locales;
+    }
+
+    propagateFallback(ctx, instance, next) {
+        // Nothing to propagate if no language is accepted
+        if (!ctx.req.parsedHeaders || !ctx.req.headers['accept-language']) {
+            return next();
+        }
+
+        ctx.args.options.parsedHeaders = ctx.req.parsedHeaders;
+        next();
     }
 
     /**
@@ -186,80 +291,6 @@ module.exports = class TranslationHandler {
             .settings.relations.translations;
         await this.loopbackModel.app.models[translationRelationConfig.model]
             .destroyAll({ [translationRelationConfig.foreignKey]: ctx.args.id });
-    }
-
-    async propagateTranslations(ctx, instance, translationHandlerContext = {}) {
-        // Nothing to propagate if no language is accepted
-        if (!ctx.req.parsedHeaders || !ctx.req.headers['accept-language']) {
-            return;
-        }
-        const hasMultipleResults = Array.isArray(instance);
-
-        const translationConfig = this.loopbackModel.definition.settings
-            .translations;
-        const translationRelationConfig = this.loopbackModel.definition
-            .settings.relations.translations;
-        const translationsFilter = {
-            order: 'locale_id ASC'
-        };
-        translationsFilter.where = hasMultipleResults ? {} : {
-            [translationRelationConfig.foreignKey]: instance.id
-        };
-        const modelTranslations = await this.loopbackModel.app
-            .models[translationRelationConfig.model]
-            .find(translationsFilter);
-        const localesFilter = this.loopbackModel.app.models.Locale
-            .definition.settings.relations.language ?
-            { include: ['language', 'country'] } : {};
-        const locales = await this.loopbackModel.app
-            .models.Locale.find(localesFilter);
-        const preparedLocales = locales.map((locale) => {
-            const result = locale.toJSON();
-            result.locale = `${locale.language['iso2']}-${locale.country['iso2']}`.toLowerCase();
-
-            return result;
-        });
-        const { options } = translationHandlerContext;
-        if (ctx.req.headers['accept-language'] && !ctx.req.parsedHeaders['accept-language']) {
-            throw new MicroserviceError(`Accept-Language Header not parsed.
-                Please register the headerParser Middleware served with the
-                package 'loopback-comonent-translations', read the package
-                readme for further instructions.`);
-        }
-        const acceptHeaders = ctx.req.parsedHeaders['accept-language'];
-        acceptHeaders.push(options.defaultAcceptHeader);
-
-        if (hasMultipleResults) {
-            instance.forEach((entity) => {
-                const translation = translationHandlerContext
-                    .getFallbackTranslation({
-                        acceptHeaders: [...acceptHeaders],
-                        translations: modelTranslations.filter(translation =>
-                            translation[translationRelationConfig.foreignKey]
-                            === entity.id),
-                        locales: preparedLocales,
-                    });
-
-                translationConfig.forEach((translatedProperty) => {
-                    // eslint-disable-next-line no-param-reassign
-                    entity[translatedProperty] = translation[translatedProperty] ?
-                        translation[translatedProperty] : '';
-                });
-            });
-        } else {
-            const translation = translationHandlerContext
-                .getFallbackTranslation({
-                    acceptHeaders: [...acceptHeaders],
-                    translations: modelTranslations,
-                    locales: preparedLocales,
-                });
-
-            translationConfig.forEach((translatedProperty) => {
-                // eslint-disable-next-line no-param-reassign
-                instance[translatedProperty] = translation[translatedProperty] ?
-                    translation[translatedProperty] : '';
-            });
-        }
     }
 
     getFallbackTranslation({ translations, acceptHeaders, locales }) {

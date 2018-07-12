@@ -44,5 +44,8 @@
     },
     "TranslationDummyLocale": {
         "dataSource": "db"
+    },
+    "TranslationDummy_Children": {
+        "dataSource": "db"
     }
 }
