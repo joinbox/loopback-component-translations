@@ -1,5 +1,7 @@
 {
-    "../../../index": {
-        "mountPath": "/getUserPermissionTree"
+    "../../../index": { },
+    "loopback-component-explorer": {
+      "mountPath": "/explorer",
+      "generateOperationScopedModels": true
     }
 }

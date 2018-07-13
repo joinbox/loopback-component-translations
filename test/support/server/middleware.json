@@ -1,9 +1,16 @@
 {
+    "parse": {
+      "../../../src/middleware/acceptLanguageHeader#parse": {}
+    },
     "routes": {
         "loopback#rest": {
             "paths": [
                 "${restApiRoot}"
             ]
         }
+    },
+    "final:after": {
+      "strong-error-handler": {}
     }
+
 }

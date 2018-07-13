@@ -1,0 +1,237 @@
+[{
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "de-ch",
+    "language": {
+        "name": "German",
+        "iso3": "DEU",
+        "iso2": "DE",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Switzerland",
+        "iso2": "CH",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    },
+    "isDefaultForLanguage": true
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "fr-ch",
+    "language": {
+        "name": "French",
+        "iso3": "FRA",
+        "iso2": "FR",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Switzerland",
+        "iso2": "CH",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    },
+    "isDefaultForLanguage": true
+}, {
+    "language_id": 3,
+    "country_id": 2,
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "it-ch",
+    "language": {
+        "name": "Italian",
+        "iso3": "ITA",
+        "iso2": "IT",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Switzerland",
+        "iso2": "CH",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    },
+    "isDefaultForLanguage": true
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "de-de",
+    "language": {
+        "name": "German",
+        "iso3": "DEU",
+        "iso2": "DE",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Germany",
+        "iso2": "DE",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    },
+    "isDefaultForLanguage": false
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "de-at",
+    "language": {
+        "name": "German",
+        "iso3": "DEU",
+        "iso2": "DE",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Austria",
+        "iso2": "AT",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    },
+    "isDefaultForLanguage": false
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "fr-fr",
+    "language": {
+        "name": "French",
+        "iso3": "FRA",
+        "iso2": "FR",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Fance",
+        "iso2": "FR",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    },
+    "isDefaultForLanguage": false
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "nl-nl",
+    "language": {
+        "name": "Dutch",
+        "iso3": "NLD",
+        "iso2": "NL",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Netherldands",
+        "iso2": "NL",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    },
+    "isDefaultForLanguage": true
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "it-it",
+    "language": {
+        "name": "Italian",
+        "iso3": "ITA",
+        "iso2": "IT",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Italy",
+        "iso2": "IT",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    },
+    "isDefaultForLanguage": false
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "en-gb",
+    "language": {
+        "name": "English",
+        "iso3": "ENG",
+        "iso2": "EN",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "United Kingdom",
+        "iso2": "GB",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    },
+    "isDefaultForLanguage": true
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "fr-be",
+    "language": {
+        "name": "French",
+        "iso3": "FRA",
+        "iso2": "FR",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Belgium",
+        "iso2": "BE",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    },
+    "isDefaultForLanguage": false
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "nl-be",
+    "language": {
+        "name": "Dutch",
+        "iso3": "NLD",
+        "iso2": "NL",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Belgium",
+        "iso2": "BE",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    },
+    "isDefaultForLanguage": false
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "fr-lu",
+    "language": {
+        "name": "French",
+        "iso3": "FRA",
+        "iso2": "FR",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Luxembourg",
+        "iso2": "LU",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    },
+    "isDefaultForLanguage": false
+}, {
+    "created": "2018-03-20T13:52:57.793Z",
+    "updated": "2018-03-20T13:52:57.793Z",
+    "locale": "de-lu",
+    "language": {
+        "name": "German",
+        "iso3": "DEU",
+        "iso2": "DE",
+        "created": "2018-03-14T12:11:07.639Z",
+        "updated": "2018-03-14T12:11:07.639Z"
+    },
+    "country": {
+        "name": "Luxembourg",
+        "iso2": "LU",
+        "created": "2018-03-20T13:52:25.676Z",
+        "updated": "2018-03-20T13:52:25.676Z"
+    },
+    "isDefaultForLanguage": false
+}]

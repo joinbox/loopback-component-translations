@@ -1,7 +1,7 @@
 const path = require('path');
 const Microservice = require('@joinbox/loopback-microservice');
 
-before('boot microservice', async function() {
+(async function() {
     const appRootDir = path.resolve(__dirname, '../server');
     const projectBootDir = path.resolve(__dirname, '../../../src/boot/');
     const appConfigRootDir = appRootDir;
@@ -21,5 +21,5 @@ before('boot microservice', async function() {
     };
 
     this.service = await Microservice.boot({ boot });
-});
-
+    await this.service.start();
+}());
