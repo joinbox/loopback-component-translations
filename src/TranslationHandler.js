@@ -48,9 +48,8 @@ module.exports = class TranslationHandler {
                 // register translatable properties on the loopback model.
                 translations.forEach((translationKey) => {
                     // Register the translatable property on the loopback model.
-                    // Note: model.definePropperty does not work in this case becase
-                    // the SQL query will include the propperty in the SELECT statement;
-                    // since the coulumn does not exist in the database this will throw an error
+                    // Note: Don't use model.defineProperty since its registering the property on
+                    // the models datasource whereas extendModel doesn't.
                     model.modelBuilder.extendModel(modelName, { [translationKey]: String });
                 });
 
