@@ -1,6 +1,6 @@
 {
   "name": "@joinbox/loopback-component-translations",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A simple implementation of translations for loopback",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,6 @@
     "url": "git+ssh://git@github.com/saia-burgess-controls/loopback-component-translations.git"
   },
   "keywords": [
-    "loopbacl",
     "translations"
   ],
   "author": "Lorenzo Kappeler",
