@@ -48,9 +48,9 @@ module.exports = class TranslationHandler {
                 // register translatable properties on the loopback model.
                 translations.forEach((translationKey) => {
                     // Register the translatable property on the loopback model.
-                    model.defineProperty(translationKey, {
-                        type: String,
-                    });
+                    // Note: Don't use model.defineProperty since its registering the property on
+                    // the models datasource whereas extendModel doesn't.
+                    model.modelBuilder.extendModel(modelName, { [translationKey]: String });
                 });
 
                 // Note: The registered function with registerHook will have the model class scope
