@@ -25,7 +25,7 @@ The module shall implement generic translations to loopback based project.
 
 **Usage:**
 
-Install the package `loopback-comonent-translations` as an npm dependency.
+Install the package `@joinbox/loopback-component-translations` as an npm dependency.
 A working example can be found in the test directory.
 
 Crate a Loopback Module for the translations
@@ -125,10 +125,25 @@ Add the package to the `component-config.json`
 
 ```
 
-Register the HeaderParse middleware to parse the Accept-Language Header.
-Add the following to your `middleware.json`
+Create a boot script to parse the language header for all requests.
+Place the boot script in your applications boot directory.
+The boot script must contain the following snippet.
+
+Further readings: https://loopback.io/doc/en/lb3/Using-current-context.html#use-a-custom-strong-remoting-phase
 ```
-"parse": {
-  "@joinbox/loopback-component-translations/src/middleware/acceptLanguageHeader#parse": {}
-},
+module.exports = function(app) {
+    app.remotes().phases
+        .addBefore('invoke', 'headers-from-request')
+        .use((ctx, next) => {
+
+            if (ctx.req.headers && ctx.req.headers['accept-language']) {
+
+                ctx.args.options.parsedHeaders = ctx.args.options.parsedHeaders || {};
+                ctx.args.options.parsedHeaders['accept-language'] = LanguageHeaderParser
+                    .parseRFCPrioritizedHeader(ctx.req.headers['accept-language']);
+            }
+
+            return next();
+        });
+};
 ```

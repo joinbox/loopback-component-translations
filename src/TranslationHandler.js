@@ -66,12 +66,6 @@ module.exports = class TranslationHandler {
                 // DELETE - Delete translations
                 model.registerHook('beforeRemote', 'deleteById', this.deleteTranslations);
 
-
-                // pass the accept header to the operation hook
-                model.beforeRemote('find', this.propagateFallback);
-                model.beforeRemote('findById', this.propagateFallback);
-                model.beforeRemote('findOne', this.propagateFallback);
-
                 // GET
                 // - Propagate translations to the model instance
                 // - Handle fall-back
@@ -184,24 +178,6 @@ module.exports = class TranslationHandler {
 
         this.locales = locales;
         return locales;
-    }
-
-    /**
-     * Write the paresd headers to the loopback contexts
-     * so it can be accessed inside an operation hook
-     *
-     * @param {Object} ctx
-     * @param {Object} instance
-     * @param {Function} next
-     */
-    propagateFallback(ctx, instance, next) {
-        // Nothing to propagate if no language is accepted
-        if (!ctx.req.parsedHeaders || !ctx.req.headers['accept-language']) {
-            return next();
-        }
-
-        ctx.args.options.parsedHeaders = ctx.req.parsedHeaders;
-        return next();
     }
 
     /**
