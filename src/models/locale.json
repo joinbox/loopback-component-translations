@@ -7,11 +7,7 @@
     },
     "idInjection": true,
     "options": {
-        "validateUpsert": true,
-        "postgresql": {
-            "schema": "language_service",
-            "table": "Locale"
-        }
+        "validateUpsert": true
     },
     "mixins": {
         "TimeStamp" : {

@@ -1,5 +1,6 @@
 const TranslationHandler = require('./src/TranslationHandler.js');
 const LanguageHeaderParser = require('./src/parser/LanguageHeaderParser.js');
+const TranslationUtilr = require('./src/util/TranslationsUtil.js');
 
 module.exports = function(app, optionsToMerge) {
     function getDefaultOptions() {
