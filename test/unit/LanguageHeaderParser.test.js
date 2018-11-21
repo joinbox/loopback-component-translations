@@ -20,4 +20,11 @@ describe('Class LanguageHeaderParser', () => {
         expect(parsedHeaders[1]).to.deep.equal({ language: 'en', country: 'us', priority: 0.7 });
         expect(parsedHeaders[2]).to.deep.equal({ language: 'en', country: '', priority: 0.5 });
     });
+
+    it('parsed and prioritizes the headers correctly', () => {
+        const parsedHeaders = LanguageHeaderParser.parseRFCPrioritizedHeader('*');
+
+        expect(parsedHeaders).to.be.an('Array').with.length(1);
+        expect(parsedHeaders[0]).to.deep.equal({ language: '*', country: '', priority: 1 });
+    });
 });
