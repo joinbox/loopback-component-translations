@@ -1,17 +1,5 @@
-
-
 class LanguageHeaderParser {
-    parse(req, res, next) {
-        if (req.headers && req.headers['accept-language']) {
-            req.parsedHeaders = req.parsedHeaders || {};
-            req.parsedHeaders['accept-language'] = this
-                .parseRFCPrioritizedHeader(req.headers['accept-language']);
-        }
-
-        return next();
-    }
-
-    parseLanguageHeader(header) {
+    static parseLanguageHeader(header) {
         return /^(?:(\*)|(?:([a-z]{2,3})(?:[-_]([a-z]{2,3}))?))(?:;\s*q\s*=\s*((1|0)(\.[0-9]{1,2})?))?$/i.exec(header);
     }
 
@@ -22,8 +10,7 @@ class LanguageHeaderParser {
      * @param  {String} headerText The Header content to parse
      * @return {Objects}           The parsed header
      */
-    // eslint-disable-next-line class-methods-use-this
-    parseRFCPrioritizedHeader(headerText) {
+    static parseRFCPrioritizedHeader(headerText) {
         return headerText
             .split(/\s*,\s*/gi)
             .map((item) => {
@@ -42,7 +29,4 @@ class LanguageHeaderParser {
 
 }
 
-const parser = new LanguageHeaderParser();
-module.exports = {
-    parse: () => parser.parse.bind(parser),
-};
+module.exports = LanguageHeaderParser;

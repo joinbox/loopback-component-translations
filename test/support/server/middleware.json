@@ -1,7 +1,4 @@
 {
-    "parse": {
-      "../../../src/middleware/acceptLanguageHeader#parse": {}
-    },
     "routes": {
         "loopback#rest": {
             "paths": [
