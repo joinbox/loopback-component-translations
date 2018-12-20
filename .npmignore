@@ -3,3 +3,4 @@ test/
 .eslintrc
 .git
 .gitignore
+.vscode
