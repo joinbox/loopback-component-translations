@@ -1,4 +1,5 @@
 const { expect } = require('chai');
+const { describe, it } = require('mocha');
 const TestDataProvider = require('./TestDataProvider');
 
 describe('Translations Integration Test', () => {
@@ -129,7 +130,7 @@ describe('Translations Integration Test', () => {
         expect(getResponse.body).to.have.property('description', 'Translation Two testDescription');
     });
 
-    it('returns empty translation according to Accept-Language header en-gb', async function() {
+    it('returns translation according to Accept-Language header en-gb', async function() {
         const testData = TestDataProvider.getTestData();
 
         const createResponse = await this.service.api.request
@@ -141,6 +142,41 @@ describe('Translations Integration Test', () => {
         const getResponse = await this.service.api.request
             .get(getEndpoint)
             .set('Accept-Language', 'en-GB');
+
+        expect(getResponse.status).to.equals(200);
+        expect(getResponse.body).to.have.property('name', 'English Translation');
+        expect(getResponse.body).to.have.property('description', 'English testDescription');
+    });
+
+    it('returns empty translations for an non existing language aa-AA', async function() {
+        const testData = TestDataProvider.getTestData();
+
+        const createResponse = await this.service.api.request
+            .post(endPointUrl)
+            .send(testData);
+        expect(createResponse.status).to.equals(200);
+
+        const getEndpoint = `${endPointUrl}${createResponse.body.id}`;
+        const getResponse = await this.service.api.request
+            .get(getEndpoint)
+            .set('Accept-Language', 'aa-AA');
+
+        expect(getResponse.status).to.equals(200);
+        expect(getResponse.body).to.have.property('name', '');
+        expect(getResponse.body).to.have.property('description', '');
+    });
+
+    it('returns empty translations if no language header is set', async function() {
+        const testData = TestDataProvider.getTestData();
+
+        const createResponse = await this.service.api.request
+            .post(endPointUrl)
+            .send(testData);
+        expect(createResponse.status).to.equals(200);
+
+        const getEndpoint = `${endPointUrl}${createResponse.body.id}`;
+        const getResponse = await this.service.api.request
+            .get(getEndpoint);
 
         expect(getResponse.status).to.equals(200);
         expect(getResponse.body).to.have.property('name', '');

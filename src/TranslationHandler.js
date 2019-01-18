@@ -117,11 +117,11 @@ module.exports = class TranslationHandler {
      * @param {Object} ctx Current context
      */
     async translate(ctx) {
-        if (!ctx.options.parsedHeaders) return;
-
         const { Model } = ctx;
         const { translations } = Model.definition.settings;
-        const acceptLanguages = ctx.options.parsedHeaders['accept-language'];
+
+        const acceptLanguages = ctx.options.parsedHeaders ?
+            ctx.options.parsedHeaders['accept-language'] : [];
         const translationRelationConfig = Model.definition.settings.relations.translations;
 
         const modelTranslations = await this.loadTranslations(Model, ctx.data.id);
@@ -137,7 +137,6 @@ module.exports = class TranslationHandler {
         translations.forEach((translationKey) => {
             ctx.data[translationKey] = translationValues[translationKey] || '';
         });
-
     }
 
     /**
