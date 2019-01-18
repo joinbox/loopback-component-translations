@@ -148,7 +148,7 @@ describe('Translations Integration Test', () => {
         expect(getResponse.body).to.have.property('description', 'English testDescription');
     });
 
-    it.only('returns empty translations for an non existing language aa-AA', async function() {
+    it('returns empty translations for an non existing language aa-AA', async function() {
         const testData = TestDataProvider.getTestData();
 
         const createResponse = await this.service.api.request
@@ -166,7 +166,7 @@ describe('Translations Integration Test', () => {
         expect(getResponse.body).to.have.property('description', '');
     });
 
-    it.only('returns empty translations if no language header is set', async function() {
+    it('returns empty translations if no language header is set', async function() {
         const testData = TestDataProvider.getTestData();
 
         const createResponse = await this.service.api.request
