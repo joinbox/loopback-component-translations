@@ -3,7 +3,8 @@ const { describe, it } = require('mocha');
 const TestDataProvider = require('./TestDataProvider');
 
 describe('Translations Integration Test', () => {
-    const endPointUrl = 'http://localhost:60001/api/TranslationDummy/';
+    const modelPath = '/TranslationDummy/';
+    const endPointUrl = `http://localhost:60001/api${modelPath}`;
     const linkPath = '/children/rel/';
 
     it('returns a valid response', async function() {
@@ -92,6 +93,25 @@ describe('Translations Integration Test', () => {
         expect(getResponse.status).to.equals(200);
         expect(getResponse.body).to.have.property('name', 'testname Translation One');
         expect(getResponse.body).to.have.property('description', 'Translation One testDescription');
+    });
+
+    it('allows propagation of all values not being null or undefined', async function() {
+        const testData = TestDataProvider.getTestData();
+
+        const response = await this.service.api.post(modelPath, testData).ok(() => true);
+        expect(response).to.have.property('status', 200);
+
+        const { id } = response.body;
+        const { status, body } = await this.service.api
+            .get(`${modelPath}${id}`)
+            .set('Accept-Language', 'de-ch, en-GB, DE_LU')
+            .ok(() => true);
+
+        expect(status).to.equal(200);
+        expect(body).to.have.property('name', 'testname Translation One');
+        expect(body).to.have.property('description', 'Translation One testDescription');
+        // It's important that this value is false and not an empty string
+        expect(body).to.have.property('isAutoTranslated', false);
     });
 
     it('returns existing translation according to Accept-Language header fr-ch', async function() {

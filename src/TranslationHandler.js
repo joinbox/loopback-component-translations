@@ -135,12 +135,14 @@ module.exports = class TranslationHandler {
         });
 
         translations.forEach((translationKey) => {
-            ctx.data[translationKey] = translationValues[translationKey] || '';
+            const value = translationValues[translationKey];
+            const valueIsUndefinedOrNull = value === undefined || value === null;
+            ctx.data[translationKey] = valueIsUndefinedOrNull ? '' : value;
         });
     }
 
     /**
-     * Loads all existing translation data form the database
+     * Loads all existing translation data from the database
      * for a given instance
      *
      * @param {Object} Model the loopback model

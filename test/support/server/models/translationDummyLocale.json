@@ -20,6 +20,9 @@
         },
         "description": {
             "type": "String"
+        },
+        "isAutoTranslated": {
+            "type": "Boolean"
         }
     },
     "validations": [],
