@@ -1,4 +1,6 @@
 const path = require('path');
+const { before } = require('mocha');
+
 const Microservice = require('@joinbox/loopback-microservice');
 
 before('boot microservice', async function() {

@@ -15,7 +15,8 @@
         },
         "translations": [
             "name",
-            "description"
+            "description",
+            "isAutoTranslated"
         ]
 
     },
